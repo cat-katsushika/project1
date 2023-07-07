@@ -5,8 +5,8 @@ from django.db import models
 from django.utils import timezone
 
 
-class Comment(models.Model):
+class Message(models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    comment = models.CharField(max_length=100)
+    message = models.CharField(max_length=100)
     created_at = models.DateTimeField(default=timezone.now)
