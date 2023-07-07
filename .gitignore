@@ -1,2 +1,5 @@
 # Macとかで作られるファイル
 *.DS_Store
+
+#Django関連
+*db.sqlite3
