@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Item, Image
+from .models import Image, Item
 
 
 class ImageInline(admin.TabularInline):
