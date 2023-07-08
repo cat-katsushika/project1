@@ -8,7 +8,7 @@ from campuses.models import Campus
 
 class Item(models.Model):
     class Meta:
-        verse_name = "出品"
+        verbose_name = "出品"
 
     class ListingStatus(models.TextChoices):
         UNPURCHASED = "unpurchased", "未購入"
@@ -27,15 +27,14 @@ class Item(models.Model):
         LITTLE = "little", "少しある"
         LOT = "lot", "かなりある"
 
-    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    listing_stauts = models.CharField(choices=ListingStatus.choices, default=ListingStatus.UNPURCHASED)
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sells")
+    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="buys")
+    listing_stauts = models.CharField(max_length=30, choices=ListingStatus.choices, default=ListingStatus.UNPURCHASED)
     price = models.PositiveIntegerField()
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
-    photo = models.ForeignKey(Image, on_delete=models.CASCADE)
-    condition = models.CharField(choices=Condition.choices)
-    writing_state = models.CharField(choices=WritingState.choices)
+    condition = models.CharField(max_length=30, choices=Condition.choices)
+    writing_state = models.CharField(max_length=30, choices=WritingState.choices)
     receivable_campus = models.ForeignKey(Campus, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
