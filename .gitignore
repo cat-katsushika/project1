@@ -1,9 +1,6 @@
 # Macとかで作られるファイル
 *.DS_Store
 
-#Django関連
-*db.sqlite3
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -66,6 +63,7 @@ coverage.xml
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+media/*/
 
 # Flask stuff:
 instance/
