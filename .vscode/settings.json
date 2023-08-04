@@ -19,5 +19,5 @@
   "[python]": {
     "editor.tabSize": 4,
     "editor.defaultFormatter": "ms-python.python"
-  },
+  }
 }
