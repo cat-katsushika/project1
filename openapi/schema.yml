@@ -1,0 +1,96 @@
+openapi: 3.0.3
+
+info:
+  title: PGWeb API
+  version: 1.0.0
+  description: 教科書・参考書取引所 OpenAPI Schema
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Local server (uses local data)
+
+paths:
+  /signup:
+    post:
+      operationId: SignUp
+      summary: サインアップ
+      description: サインアップ
+      tags:
+        - auth
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 大学メールアドレス
+                  example: example@ed.tus.ac.jp
+                password:
+                  type: string
+                  description: パスワード
+                  example: example_password
+      responses:
+        201:
+          description: サインアップ成功
+        400:
+          description: サインアップ失敗
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      description: エラーコード
+                    detail:
+                      type: string
+                      description: エラー詳細
+
+
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    Unauthorized:
+      description: 401 Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                description: エラーコード
+                example: "001"
+              detail:
+                type: string
+                description: エラー詳細
+                example: 不正なトークンです。
+    Forbidden:
+      description: 403 Error
+    NotFound:
+      description: 404 Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                description: エラーコード
+                example: "XXX"
+              detail:
+                type: string
+                description: エラー詳細
+                example: XXXが存在しません。
