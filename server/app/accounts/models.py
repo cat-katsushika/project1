@@ -41,11 +41,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=uuid.uuid4,
         editable=False,
     )
-    student_number = models.CharField(
-        verbose_name="学籍番号",
-        max_length=15,
-        unique=True,
-    )
     email = models.EmailField(
         verbose_name="メールアドレス",
         max_length=350,
@@ -71,10 +66,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
-    REQUIRED_FIELDS = ["student_number"]
 
     class Meta:
-        verbose_name = "user"
+        verbose_name = "ユーザー"
 
     def clean(self):
         super().clean()
