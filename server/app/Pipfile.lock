@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "80cdae7f5da59ad72fcb9ac6501fcb318789ccf18b5c3468683c82ff0ff2365e"
+            "sha256": "bed5c937ef4844d7bf6ad1663bfe6392156162e85879aefd0a3ebc6ed75e03cc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -33,6 +33,14 @@
             "index": "pypi",
             "version": "==4.2.3"
         },
+        "django-filter": {
+            "hashes": [
+                "sha256:2fe15f78108475eda525692813205fa6f9e8c1caf1ae65daa5862d403c6dbf00",
+                "sha256:d12d8e0fc6d3eb26641e553e5d53b191eb8cec611427d4bdce0becb1f7c172b5"
+            ],
+            "index": "pypi",
+            "version": "==23.2"
+        },
         "djangorestframework": {
             "hashes": [
                 "sha256:579a333e6256b09489cbe0a067e66abe55c6595d8926be6b99423786334350c8",
@@ -40,6 +48,13 @@
             ],
             "index": "pypi",
             "version": "==3.14.0"
+        },
+        "drf-writable-nested": {
+            "hashes": [
+                "sha256:154c0381e8a3a477e0fd539d5e1caf8ff4c1097a9c0c0fe741d4858b11b0455b"
+            ],
+            "index": "pypi",
+            "version": "==0.7.0"
         },
         "pillow": {
             "hashes": [

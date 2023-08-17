@@ -7,6 +7,8 @@ name = "pypi"
 django = "==4.2.3"
 pillow = "*"
 djangorestframework = "==3.14.0"
+django-filter = "*"
+drf-writable-nested = "*"
 
 [dev-packages]
 black = "*"
