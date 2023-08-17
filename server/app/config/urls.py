@@ -10,6 +10,9 @@ urlpatterns = [
     path("api/comment/", include("comments.urls")),
     path("items/", include("items.urls")),
     path("api/messages/", include("transaction_messages.urls")),
+    path("api/auth/", include("djoser.urls")),
+    path("api/auth/", include("djoser.urls.jwt")),
+    path("api/", include("accounts.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
