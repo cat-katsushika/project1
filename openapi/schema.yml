@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  title: PGWeb API
+  title: 教科書・参考書取引所 OpenAPI
   version: 1.0.0
   description: 教科書・参考書取引所 OpenAPI Schema
 
@@ -37,6 +37,17 @@ paths:
       responses:
         201:
           description: サインアップ成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: example@ed.tus.ac.jp
+                  uid:
+                    type: string
+                    format: uuid
         400:
           description: サインアップ失敗
           content:
