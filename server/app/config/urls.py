@@ -6,7 +6,10 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
+    path("api/", include("campuses.urls")),
+    path("api/comment/", include("comments.urls")),
     path("api/items/", include("items.urls")),
+    path("api/messages/", include("transaction_messages.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
