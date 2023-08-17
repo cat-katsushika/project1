@@ -1,4 +1,3 @@
-from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_framework import serializers
 from .models import Item, Image
 
@@ -9,8 +8,9 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ItemSerializer(WritableNestedModelSerializer):
-    images = ImageSerializer(many=True)
+# TODO: seller、read_only=Trueかも
+class ItemSerializer(serializers.ModelSerializer):
+    image_set = ImageSerializer(many=True)
 
     class Meta:
         model = Item
@@ -21,11 +21,8 @@ class ItemSerializer(WritableNestedModelSerializer):
         validated_data["buyer"] = None
         validated_data["listing_status"] = Item.ListingStatus.UNPURCHASED
 
-        images_data = validated_data.pop("images", [])  # images データを一旦取り出す
-
-        item = Item.objects.create(**validated_data)
-
+        images_data = self.context.get("image_data")
+        item_insrance = Item.objects.create(**validated_data)
         for image_data in images_data:
-            Image.objects.create(parent_item=item, **image_data)
-
-        return item
+            Image.objects.create(parent_item=item_insrance, **image_data)
+        return item_insrance

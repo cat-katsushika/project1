@@ -49,13 +49,6 @@
             "index": "pypi",
             "version": "==3.14.0"
         },
-        "drf-writable-nested": {
-            "hashes": [
-                "sha256:154c0381e8a3a477e0fd539d5e1caf8ff4c1097a9c0c0fe741d4858b11b0455b"
-            ],
-            "index": "pypi",
-            "version": "==0.7.0"
-        },
         "pillow": {
             "hashes": [
                 "sha256:00e65f5e822decd501e374b0650146063fbb30a7264b4d2744bdd7b913e0cab5",

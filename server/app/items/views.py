@@ -14,6 +14,10 @@ class ItemListCreateView(generics.ListCreateAPIView):
     filterset_fields = "__all__"
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    def perform_create(self, serializer):
+        images_data = self.request.data.get("image_set")
+        serializer.save(images_data=images_data)
+
 
 class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
