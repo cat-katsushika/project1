@@ -86,30 +86,31 @@ paths:
                 $ref: '#/components/schemas/TokenVerify'
           description: ''
   /api/auth/users/:
-    get:
-      operationId: auth_users_list
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      tags:
-      - auth
-      security:
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedUserList'
-          description: ''
+  #   get:
+  #     operationId: auth_users_list
+  #     parameters:
+  #     - name: page
+  #       required: false
+  #       in: query
+  #       description: A page number within the paginated result set.
+  #       schema:
+  #         type: integer
+  #     tags:
+  #     - auth
+  #     security:
+  #     - jwtAuth: []
+  #     responses:
+  #       '200':
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/PaginatedUserList'
+  #         description: ''
     post:
       operationId: auth_users_create
       tags:
       - auth
+      description: サインアップ
       requestBody:
         content:
           application/json:
@@ -131,7 +132,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserCreate'
-          description: ''
+          description: 'サインアップ成功'
+        400:
+          description: サインアップ失敗
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    detail:
+                      type: string
+                      description: エラー詳細
+
+              examples:
+                名前未入力:
+                  value:
+                    - detail: 名前を入力してください
+                メールアドレス未入力:
+                  value:
+                    - detail: メールアドレスを入力してください
+                メールアドレス上限文字数:
+                  value:
+                    - detail: メールアドレスは350文字まで入力可能です
+                メールアドレス大学ドメイン制約:
+                  value:
+                    - detail: メールアドレスの形式は「@ed.tus.ac.jp」です
+
+
   /api/auth/users/{id}/:
     get:
       operationId: auth_users_retrieve
