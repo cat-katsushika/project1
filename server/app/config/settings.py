@@ -198,7 +198,7 @@ DJOSER = {
     # カスタムユーザー用シリアライザー
     "SERIALIZERS": {
         "user_create": "accounts.serializers.UserSerializer",
-        "user_create_password_retype": "accounts.serializers.UserSerializer",
+        "user_create_password_retype": "accounts.serializers.UserCreateSerializer",
         "user": "accounts.serializers.UserSerializer",
         "current_user": "accounts.serializers.UserSerializer",
     },
