@@ -24,11 +24,16 @@ class Item(models.Model):
         LITTLE = "little", "少しある"
         LOT = "lot", "かなりある"
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sell_item")
-    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, related_name="buy_item")
+    buyer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name="buy_item"
+    )
+    # MEMO: キャンセル済みは未時購入で吸収してもいいかも
     listing_status = models.CharField(max_length=11, choices=ListingStatus.choices, default=ListingStatus.UNPURCHASED)
     price = models.PositiveSmallIntegerField()
     name = models.CharField(max_length=50)
+    # MEMO: Textにする？文字数制限どうする？
     description = models.CharField(max_length=255)
     condition = models.CharField(max_length=7, choices=Condition.choices)
     writing_state = models.CharField(max_length=6, choices=WritingState.choices)
