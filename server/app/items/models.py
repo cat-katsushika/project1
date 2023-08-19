@@ -39,11 +39,14 @@ class Item(models.Model):
     writing_state = models.CharField(max_length=6, choices=WritingState.choices)
     receivable_campus = models.ForeignKey(Campus, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
+    # MEMO: いるかなと思って追加しといた。いらなかったら消す。
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
 
 
+# MEMO: URLにユーザーIDいらないかも
 # アップロード先のパス: <MEDIA_ROOT>/images/items/<出品者のユーザーID>/<ファイル名>
 def get_item_image_path(instance, filename):
     return "images/items/{0}/{1}".format(instance.parent_item.seller.id, filename)
@@ -52,5 +55,7 @@ def get_item_image_path(instance, filename):
 class Image(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     parent_item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to=get_item_image_path)
+    photo_url = models.ImageField(upload_to=get_item_image_path)
+    order = models.PositiveSmallIntegerField()
+    # MEMO: これ必要かな?
     uploaded_at = models.DateTimeField(auto_now_add=True)
