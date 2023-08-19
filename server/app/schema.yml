@@ -161,114 +161,114 @@ paths:
                     - detail: メールアドレスの形式は「@ed.tus.ac.jp」です
 
 
-  /api/auth/users/{id}/:
-    get:
-      operationId: auth_users_retrieve
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-          title: ユーザーID
-        description: A UUID string identifying this ユーザー.
-        required: true
-      tags:
-      - auth
-      security:
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
-    put:
-      operationId: auth_users_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-          title: ユーザーID
-        description: A UUID string identifying this ユーザー.
-        required: true
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      security:
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
-    patch:
-      operationId: auth_users_partial_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-          title: ユーザーID
-        description: A UUID string identifying this ユーザー.
-        required: true
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedUser'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedUser'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedUser'
-      security:
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
-    delete:
-      operationId: auth_users_destroy
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-          title: ユーザーID
-        description: A UUID string identifying this ユーザー.
-        required: true
-      tags:
-      - auth
-      security:
-      - jwtAuth: []
-      responses:
-        '204':
-          description: No response body
+  # /api/auth/users/{id}/:
+  #   get:
+  #     operationId: auth_users_retrieve
+  #     parameters:
+  #     - in: path
+  #       name: id
+  #       schema:
+  #         type: string
+  #         format: uuid
+  #         title: ユーザーID
+  #       description: A UUID string identifying this ユーザー.
+  #       required: true
+  #     tags:
+  #     - auth
+  #     security:
+  #     - jwtAuth: []
+  #     responses:
+  #       '200':
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/User'
+  #         description: ''
+  #   put:
+  #     operationId: auth_users_update
+  #     parameters:
+  #     - in: path
+  #       name: id
+  #       schema:
+  #         type: string
+  #         format: uuid
+  #         title: ユーザーID
+  #       description: A UUID string identifying this ユーザー.
+  #       required: true
+  #     tags:
+  #     - auth
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/User'
+  #         application/x-www-form-urlencoded:
+  #           schema:
+  #             $ref: '#/components/schemas/User'
+  #         multipart/form-data:
+  #           schema:
+  #             $ref: '#/components/schemas/User'
+  #       required: true
+  #     security:
+  #     - jwtAuth: []
+  #     responses:
+  #       '200':
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/User'
+  #         description: ''
+  #   patch:
+  #     operationId: auth_users_partial_update
+  #     parameters:
+  #     - in: path
+  #       name: id
+  #       schema:
+  #         type: string
+  #         format: uuid
+  #         title: ユーザーID
+  #       description: A UUID string identifying this ユーザー.
+  #       required: true
+  #     tags:
+  #     - auth
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/PatchedUser'
+  #         application/x-www-form-urlencoded:
+  #           schema:
+  #             $ref: '#/components/schemas/PatchedUser'
+  #         multipart/form-data:
+  #           schema:
+  #             $ref: '#/components/schemas/PatchedUser'
+  #     security:
+  #     - jwtAuth: []
+  #     responses:
+  #       '200':
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/User'
+  #         description: ''
+  #   delete:
+  #     operationId: auth_users_destroy
+  #     parameters:
+  #     - in: path
+  #       name: id
+  #       schema:
+  #         type: string
+  #         format: uuid
+  #         title: ユーザーID
+  #       description: A UUID string identifying this ユーザー.
+  #       required: true
+  #     tags:
+  #     - auth
+  #     security:
+  #     - jwtAuth: []
+  #     responses:
+  #       '204':
+  #         description: No response body
   /api/auth/users/activation/:
     post:
       operationId: auth_users_activation_create
@@ -600,16 +600,26 @@ paths:
   /api/comment/:
     get:
       operationId: comment_retrieve
+      summary: コメント一覧取得API
+      description: コメント一覧取得API
       tags:
       - comment
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+          description: ''
   /api/comment/create/:
     post:
       operationId: comment_create_create
+      summary: コメント作成API
+      description: コメント作成API
       tags:
       - comment
       requestBody:
@@ -636,6 +646,8 @@ paths:
   /api/items/:
     get:
       operationId: items_list
+      summary: 商品一覧取得API
+      description: 商品一覧取得API
       parameters:
       - in: query
         name: buyer
@@ -736,6 +748,8 @@ paths:
           description: ''
     post:
       operationId: items_create
+      summary: 商品登録API
+      description: 商品登録API
       tags:
       - items
       requestBody:
@@ -762,6 +776,8 @@ paths:
   /api/items/{id}/:
     get:
       operationId: items_retrieve
+      summary: 商品詳細取得API
+      description: 商品詳細取得API
       parameters:
       - in: path
         name: id
@@ -783,6 +799,8 @@ paths:
           description: ''
     put:
       operationId: items_update
+      summary: 商品情報更新API
+      description: 商品情報更新API
       parameters:
       - in: path
         name: id
@@ -815,6 +833,8 @@ paths:
           description: ''
     patch:
       operationId: items_partial_update
+      summary: 商品情報一部更新API
+      description: 商品情報一部更新API
       parameters:
       - in: path
         name: id
@@ -843,9 +863,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
-          description: ''
+          description: 成功
     delete:
       operationId: items_destroy
+      summary: 商品削除API
+      description: 商品削除API
       parameters:
       - in: path
         name: id
@@ -869,7 +891,14 @@ paths:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          description: '成功'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+
   /api/messages/create/:
     post:
       operationId: messages_create_create
@@ -899,16 +928,26 @@ paths:
   /api/university/:
     get:
       operationId: university_retrieve
+      summary: 大学一覧取得API
+      description: 大学一覧取得API
       tags:
       - university
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/University'
+          description: ''
   /api/university/{id}/:
     get:
       operationId: university_retrieve_2
+      summary: 大学詳細取得API
+      description: 大学詳細取得API
       parameters:
       - in: path
         name: id
