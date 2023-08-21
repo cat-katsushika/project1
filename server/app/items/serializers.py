@@ -5,13 +5,14 @@ from .models import Item, Image
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = "__all__"
+        fields = ("order", "photo_path")
+        extra_kwargs = {"order": {"required": False}}
 
 
 class ItemSerializer(serializers.ModelSerializer):
-    seller = serializers.ReadOnlyField(source="seller.student_number")
+    seller = serializers.ReadOnlyField(source="seller.student_number", default=serializers.CurrentUserDefault())
     receivable_campus = serializers.ReadOnlyField(source="receivable_campus.campus")
-    images = ImageSerializer(many=True, required=False)
+    images = ImageSerializer(many=True)
 
     class Meta:
         model = Item
@@ -25,11 +26,10 @@ class ItemSerializer(serializers.ModelSerializer):
         return images_data
 
     def create(self, validated_data):
-        validated_data["seller"] = self.context["request"].user
         validated_data["buyer"] = None
         validated_data["listing_status"] = Item.ListingStatus.UNPURCHASED
 
-        images_data = self.context.get("images")
+        images_data = validated_data.pop("images")
         item = Item.objects.create(**validated_data)
         self.create_images(item, images_data)
         return item
@@ -39,7 +39,7 @@ class ItemSerializer(serializers.ModelSerializer):
             Image.objects.create(parent_item=item, order=index, **image_data)
 
     def update(self, instance, validated_data):
-        images_data = self.context.get("images")
+        images_data = validated_data.pop("images")
         item = super().update(instance, validated_data)
         self.update_images(item, images_data)
         return instance

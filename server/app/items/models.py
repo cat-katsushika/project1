@@ -1,7 +1,10 @@
+import os
 import uuid
 
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 from campuses.models import Campus
 
@@ -54,8 +57,15 @@ def get_item_image_path(instance, filename):
 
 class Image(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    parent_item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    photo_url = models.ImageField(upload_to=get_item_image_path)
+    parent_item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="images")
+    photo_path = models.ImageField(upload_to=get_item_image_path)
     order = models.PositiveSmallIntegerField()
-    # MEMO: これ必要かな?
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+
+# Imageモデルのオブジェクトが削除される前に、関連する画像ファイルを削除する
+@receiver(pre_delete, sender=Image)
+def delete_image_files(sender, instance, **kwargs):
+    if instance.photo_path:
+        if os.path.isfile(instance.photo_path.path):
+            os.remove(instance.photo_path.path)
