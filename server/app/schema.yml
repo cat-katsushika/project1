@@ -4,14 +4,36 @@ info:
   version: 1.0.0
   description: Your project description
 paths:
+  /api/accounts/users/:
+    get:
+      operationId: accounts_users_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
   /api/auth/jwt/create/:
     post:
-      operationId: api_auth_jwt_create_create
+      operationId: auth_jwt_create_create
       description: |-
         Takes a set of user credentials and returns an access and refresh JSON web
         token pair to prove the authentication of those credentials.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -33,12 +55,12 @@ paths:
           description: ''
   /api/auth/jwt/refresh/:
     post:
-      operationId: api_auth_jwt_refresh_create
+      operationId: auth_jwt_refresh_create
       description: |-
         Takes a refresh type JSON web token and returns an access type JSON web
         token if the refresh token is valid.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -60,12 +82,12 @@ paths:
           description: ''
   /api/auth/jwt/verify/:
     post:
-      operationId: api_auth_jwt_verify_create
+      operationId: auth_jwt_verify_create
       description: |-
         Takes a token and indicates if it is valid.  This view provides no
         information about a token's fitness for a particular use.
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -85,9 +107,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/TokenVerify'
           description: ''
+  /api/auth/token/login/:
+    post:
+      operationId: auth_token_login_create
+      description: Use this endpoint to obtain user authentication token.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenCreate'
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenCreate'
+          description: ''
+  /api/auth/token/logout/:
+    post:
+      operationId: auth_token_logout_create
+      description: Use this endpoint to logout user (remove user authentication token).
+      tags:
+      - auth
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
   /api/auth/users/:
     get:
-      operationId: api_auth_users_list
+      operationId: auth_users_list
       parameters:
       - name: page
         required: false
@@ -96,7 +158,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - auth
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -108,9 +170,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedUserList'
           description: ''
     post:
-      operationId: api_auth_users_create
+      operationId: auth_users_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -136,7 +198,7 @@ paths:
           description: ''
   /api/auth/users/{id}/:
     get:
-      operationId: api_auth_users_retrieve
+      operationId: auth_users_retrieve
       parameters:
       - in: path
         name: id
@@ -147,7 +209,7 @@ paths:
         description: A UUID string identifying this ユーザー.
         required: true
       tags:
-      - api
+      - auth
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -159,7 +221,7 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     put:
-      operationId: api_auth_users_update
+      operationId: auth_users_update
       parameters:
       - in: path
         name: id
@@ -170,7 +232,7 @@ paths:
         description: A UUID string identifying this ユーザー.
         required: true
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -194,7 +256,7 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     patch:
-      operationId: api_auth_users_partial_update
+      operationId: auth_users_partial_update
       parameters:
       - in: path
         name: id
@@ -205,7 +267,7 @@ paths:
         description: A UUID string identifying this ユーザー.
         required: true
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -228,7 +290,7 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     delete:
-      operationId: api_auth_users_destroy
+      operationId: auth_users_destroy
       parameters:
       - in: path
         name: id
@@ -239,7 +301,7 @@ paths:
         description: A UUID string identifying this ユーザー.
         required: true
       tags:
-      - api
+      - auth
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -248,9 +310,9 @@ paths:
           description: No response body
   /api/auth/users/activation/:
     post:
-      operationId: api_auth_users_activation_create
+      operationId: auth_users_activation_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -276,9 +338,9 @@ paths:
           description: ''
   /api/auth/users/me/:
     get:
-      operationId: api_auth_users_me_retrieve
+      operationId: auth_users_me_retrieve
       tags:
-      - api
+      - auth
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -290,9 +352,9 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     put:
-      operationId: api_auth_users_me_update
+      operationId: auth_users_me_update
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -316,9 +378,9 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     patch:
-      operationId: api_auth_users_me_partial_update
+      operationId: auth_users_me_partial_update
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -341,9 +403,9 @@ paths:
                 $ref: '#/components/schemas/User'
           description: ''
     delete:
-      operationId: api_auth_users_me_destroy
+      operationId: auth_users_me_destroy
       tags:
-      - api
+      - auth
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -352,9 +414,9 @@ paths:
           description: No response body
   /api/auth/users/resend_activation/:
     post:
-      operationId: api_auth_users_resend_activation_create
+      operationId: auth_users_resend_activation_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -380,9 +442,9 @@ paths:
           description: ''
   /api/auth/users/reset_email/:
     post:
-      operationId: api_auth_users_reset_email_create
+      operationId: auth_users_reset_email_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -408,9 +470,9 @@ paths:
           description: ''
   /api/auth/users/reset_email_confirm/:
     post:
-      operationId: api_auth_users_reset_email_confirm_create
+      operationId: auth_users_reset_email_confirm_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -436,9 +498,9 @@ paths:
           description: ''
   /api/auth/users/reset_password/:
     post:
-      operationId: api_auth_users_reset_password_create
+      operationId: auth_users_reset_password_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -464,9 +526,9 @@ paths:
           description: ''
   /api/auth/users/reset_password_confirm/:
     post:
-      operationId: api_auth_users_reset_password_confirm_create
+      operationId: auth_users_reset_password_confirm_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -492,9 +554,9 @@ paths:
           description: ''
   /api/auth/users/set_email/:
     post:
-      operationId: api_auth_users_set_email_create
+      operationId: auth_users_set_email_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -519,9 +581,9 @@ paths:
           description: ''
   /api/auth/users/set_password/:
     post:
-      operationId: api_auth_users_set_password_create
+      operationId: auth_users_set_password_create
       tags:
-      - api
+      - auth
       requestBody:
         content:
           application/json:
@@ -546,7 +608,7 @@ paths:
           description: ''
   /api/campus/:
     get:
-      operationId: api_campus_list
+      operationId: campus_list
       parameters:
       - name: page
         required: false
@@ -555,7 +617,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - campus
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -568,7 +630,7 @@ paths:
           description: ''
   /api/campus/{id}/:
     get:
-      operationId: api_campus_retrieve
+      operationId: campus_retrieve
       parameters:
       - in: path
         name: id
@@ -577,7 +639,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - campus
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -590,9 +652,9 @@ paths:
           description: ''
   /api/comment/:
     get:
-      operationId: api_comment_retrieve
+      operationId: comment_retrieve
       tags:
-      - api
+      - comment
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -601,9 +663,9 @@ paths:
           description: No response body
   /api/comment/create/:
     post:
-      operationId: api_comment_create_create
+      operationId: comment_create_create
       tags:
-      - api
+      - comment
       requestBody:
         content:
           application/json:
@@ -628,7 +690,7 @@ paths:
           description: ''
   /api/items/:
     get:
-      operationId: api_items_list
+      operationId: items_list
       parameters:
       - in: query
         name: buyer
@@ -716,7 +778,7 @@ paths:
           * `little` - 少しある
           * `lot` - かなりある
       tags:
-      - api
+      - items
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -729,9 +791,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedItemList'
           description: ''
     post:
-      operationId: api_items_create
+      operationId: items_create
       tags:
-      - api
+      - items
       requestBody:
         content:
           application/json:
@@ -756,7 +818,7 @@ paths:
           description: ''
   /api/items/{id}/:
     get:
-      operationId: api_items_retrieve
+      operationId: items_retrieve
       parameters:
       - in: path
         name: id
@@ -765,7 +827,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - items
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -778,7 +840,7 @@ paths:
                 $ref: '#/components/schemas/Item'
           description: ''
     put:
-      operationId: api_items_update
+      operationId: items_update
       parameters:
       - in: path
         name: id
@@ -787,7 +849,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - items
       requestBody:
         content:
           application/json:
@@ -811,7 +873,7 @@ paths:
                 $ref: '#/components/schemas/Item'
           description: ''
     patch:
-      operationId: api_items_partial_update
+      operationId: items_partial_update
       parameters:
       - in: path
         name: id
@@ -820,7 +882,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - items
       requestBody:
         content:
           application/json:
@@ -843,7 +905,7 @@ paths:
                 $ref: '#/components/schemas/Item'
           description: ''
     delete:
-      operationId: api_items_destroy
+      operationId: items_destroy
       parameters:
       - in: path
         name: id
@@ -852,7 +914,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - items
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -861,9 +923,9 @@ paths:
           description: No response body
   /api/messages/:
     get:
-      operationId: api_messages_retrieve
+      operationId: messages_retrieve
       tags:
-      - api
+      - messages
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -872,9 +934,9 @@ paths:
           description: No response body
   /api/messages/create/:
     post:
-      operationId: api_messages_create_create
+      operationId: messages_create_create
       tags:
-      - api
+      - messages
       requestBody:
         content:
           application/json:
@@ -899,9 +961,9 @@ paths:
           description: ''
   /api/university/:
     get:
-      operationId: api_university_retrieve
+      operationId: university_retrieve
       tags:
-      - api
+      - university
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -910,7 +972,7 @@ paths:
           description: No response body
   /api/university/{id}/:
     get:
-      operationId: api_university_retrieve_2
+      operationId: university_retrieve_2
       parameters:
       - in: path
         name: id
@@ -919,7 +981,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - api
+      - university
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -932,7 +994,7 @@ paths:
           description: ''
   /api/users/:
     get:
-      operationId: api_users_list
+      operationId: users_list
       parameters:
       - name: page
         required: false
@@ -941,7 +1003,7 @@ paths:
         schema:
           type: integer
       tags:
-      - api
+      - users
       security:
       - tokenAuth: []
       - jwtAuth: []
@@ -952,46 +1014,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedUserList'
           description: ''
-  /auth/token/login/:
-    post:
-      operationId: auth_token_login_create
-      description: Use this endpoint to obtain user authentication token.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TokenCreate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/TokenCreate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/TokenCreate'
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenCreate'
-          description: ''
-  /auth/token/logout/:
-    post:
-      operationId: auth_token_logout_create
-      description: Use this endpoint to logout user (remove user authentication token).
-      tags:
-      - auth
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '200':
-          description: No response body
 components:
   schemas:
     Activation:
