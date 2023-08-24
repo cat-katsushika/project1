@@ -11,7 +11,8 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.ModelSerializer):
     seller = serializers.ReadOnlyField(source="seller.student_number", default=serializers.CurrentUserDefault())
-    receivable_campus = serializers.ReadOnlyField(source="receivable_campus.campus")
+    buyer = serializers.CharField(source="buyer.student_number")
+    receivable_campus = serializers.CharField(source="receivable_campus.campus")
     images = ImageSerializer(many=True)
 
     class Meta:
