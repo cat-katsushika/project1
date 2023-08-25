@@ -1,0 +1,18 @@
+[
+	{
+		"model": "accounts.user",
+		"pk": "110ef09c-cb48-46f4-a36d-d35492210357",
+		"fields": {
+			"password": "example",
+			"last_login": null,
+			"is_superuser": false,
+			"email": "example@ed.tus.ac.jp",
+			"is_staff": false,
+			"is_active": true,
+			"created_at": "2023-08-18T06:16:47.603Z",
+			"updated_at": "2023-08-18T06:16:47.603Z",
+			"groups": [],
+			"user_permissions": []
+		}
+	}
+]
