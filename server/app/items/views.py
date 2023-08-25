@@ -1,8 +1,8 @@
 from django_filters import rest_framework as filters
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
 
-from .models import Item
+from .models import Item, Like
 from .serializers import ItemSerializer
 
 
@@ -12,22 +12,97 @@ class ItemListCreateView(generics.ListCreateAPIView):
     filter_backends = [filters.DjangoFilterBackend]
     # TODO: フィルタのカスタム
     filterset_fields = "__all__"
-    permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def perform_create(self, serializer):
-        images_data = self.request.data.get("image_set")
-        serializer.save(images_data=images_data)
+
+class IsOwnerOrAdminOrReadOnly(permissions.BasePermission):
+    message = "出品者しか編集できません。"
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user == obj.seller or request.user.is_staff
 
 
 class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwnerOrAdminOrReadOnly]
 
-    def destroy(self, request, *args, **kwargs):
-        obj = self.get_object()
 
-        if request.user == obj.seller or request.user.is_staff:
-            return super().destroy(request, *args, **kwargs)
+class ItemPurchaseView(generics.UpdateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
 
-        return self.permission_denied(request)
+    def update(self, request, *args, **kwargs):
+        item = self.get_object()
+
+        if item.seller == request.user:
+            return Response({"error": "自分自身の商品を購入することはできません。"}, status=status.HTTP_400_BAD_REQUEST)
+
+        item.buyer = request.user
+        item.listing_status = Item.ListingStatus.PURCHASED
+        item.save()
+
+        serializer = self.get_serializer(item)
+        return Response(serializer.data)
+
+
+class ItemCancelView(generics.UpdateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+    def update(self, request, *args, **kwargs):
+        item = self.get_object()
+
+        item.buyer = None
+        item.listing_status = Item.ListingStatus.UNPURCHASED
+        item.save()
+
+        serializer = self.get_serializer(item)
+        return Response(serializer.data)
+
+
+class ItemCompleteView(generics.UpdateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+    def update(self, request, *args, **kwargs):
+        item = self.get_object()
+
+        if item.buyer != request.user:
+            # TODO: エラーメッセージを追加する
+            return Response({"error": ""}, status=status.HTTP_400_BAD_REQUEST)
+
+        item.listing_status = Item.ListingStatus.COMPLETED
+        item.save()
+
+        serializer = self.get_serializer(item)
+        return Response(serializer.data)
+
+
+class ItemLikeToggleView(generics.UpdateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        item = self.get_object()
+        user = request.user
+
+        if user in item.liked_by.all():
+            # instance.liked_by.remove(user)
+            Like.objects.get(item=item, user=user).delete()
+        else:
+            # instance.liked_by.add(user)
+            Like.objects.create(item=item, user=user)
+
+        serializer = self.get_serializer(item)
+        return Response(serializer.data)
+
+
+class LikeItemListView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        liked_items = Item.objects.filter(liked_by__user=user)
+        return liked_items
