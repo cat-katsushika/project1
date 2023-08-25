@@ -2,7 +2,7 @@ from django_filters import rest_framework as filters
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
-from .models import Item
+from .models import Item, Like
 from .serializers import ItemSerializer
 
 
@@ -45,7 +45,7 @@ class ItemPurchaseView(generics.UpdateAPIView):
 
         serializer = self.get_serializer(item)
         return Response(serializer.data)
-    
+
 
 class ItemCancelView(generics.UpdateAPIView):
     queryset = Item.objects.all()
@@ -54,16 +54,13 @@ class ItemCancelView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         item = self.get_object()
 
-        if item.seller != request.user:
-            return Response({"error": "自分の商品以外はキャンセルできません。"}, status=status.HTTP_400_BAD_REQUEST)
-
         item.buyer = None
         item.listing_status = Item.ListingStatus.UNPURCHASED
         item.save()
 
         serializer = self.get_serializer(item)
         return Response(serializer.data)
-    
+
 
 class ItemCompleteView(generics.UpdateAPIView):
     queryset = Item.objects.all()
@@ -81,3 +78,31 @@ class ItemCompleteView(generics.UpdateAPIView):
 
         serializer = self.get_serializer(item)
         return Response(serializer.data)
+
+
+class ItemLikeToggleView(generics.UpdateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        item = self.get_object()
+        user = request.user
+
+        if user in item.liked_by.all():
+            # instance.liked_by.remove(user)
+            Like.objects.get(item=item, user=user).delete()
+        else:
+            # instance.liked_by.add(user)
+            Like.objects.create(item=item, user=user)
+
+        serializer = self.get_serializer(item)
+        return Response(serializer.data)
+
+
+class LikeItemListView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        liked_items = Item.objects.filter(liked_by__user=user)
+        return liked_items

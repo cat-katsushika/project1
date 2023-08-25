@@ -69,3 +69,10 @@ def delete_image_files(sender, instance, **kwargs):
     if instance.photo_path:
         if os.path.isfile(instance.photo_path.path):
             os.remove(instance.photo_path.path)
+
+
+class Like(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="liked_by")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
