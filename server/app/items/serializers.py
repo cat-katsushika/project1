@@ -11,9 +11,20 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.ModelSerializer):
     seller = serializers.ReadOnlyField(source="seller.student_number", default=serializers.CurrentUserDefault())
-    buyer = serializers.CharField(source="buyer.student_number")
     receivable_campus = serializers.CharField(source="receivable_campus.campus")
     images = ImageSerializer(many=True)
+    is_liked_by_current_user = serializers.SerializerMethodField()
+
+    def get_buyer(self, obj):
+        if obj.buyer:
+            return obj.buyer.student_number
+        return None
+
+    def get_is_liked_by_current_user(self, obj):
+        user = self.context["request"].user
+        if user.is_authenticated:
+            return obj.liked_by.filter(user=user).exists()
+        return False
 
     class Meta:
         model = Item
