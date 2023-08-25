@@ -8,6 +8,8 @@ django = "==4.2.3"
 pillow = "*"
 djangorestframework = "==3.14.0"
 django-filter = "*"
+djoser = "==2.2.0"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 black = "*"
