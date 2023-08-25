@@ -4,28 +4,6 @@ info:
   version: 1.0.0
   description: Your project description
 paths:
-  /api/accounts/users/:
-    get:
-      operationId: accounts_users_list
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      tags:
-      - accounts
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedUserList'
-          description: ''
   /api/auth/jwt/create/:
     post:
       operationId: auth_jwt_create_create
@@ -80,73 +58,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/TokenRefresh'
           description: ''
-  /api/auth/jwt/verify/:
+  /api/auth/logout/:
     post:
-      operationId: auth_jwt_verify_create
+      operationId: auth_logout_create
       description: |-
-        Takes a token and indicates if it is valid.  This view provides no
-        information about a token's fitness for a particular use.
+        Takes a token and blacklists it. Must be used with the
+        `rest_framework_simplejwt.token_blacklist` app installed.
       tags:
       - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenVerify'
+              $ref: '#/components/schemas/TokenBlacklist'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenVerify'
+              $ref: '#/components/schemas/TokenBlacklist'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenVerify'
+              $ref: '#/components/schemas/TokenBlacklist'
         required: true
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenVerify'
+                $ref: '#/components/schemas/TokenBlacklist'
           description: ''
-  /api/auth/token/login/:
-    post:
-      operationId: auth_token_login_create
-      description: Use this endpoint to obtain user authentication token.
-      tags:
-      - auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TokenCreate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/TokenCreate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/TokenCreate'
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenCreate'
-          description: ''
-  /api/auth/token/logout/:
-    post:
-      operationId: auth_token_logout_create
-      description: Use this endpoint to logout user (remove user authentication token).
-      tags:
-      - auth
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '200':
-          description: No response body
   /api/auth/users/:
     get:
       operationId: auth_users_list
@@ -766,6 +704,11 @@ paths:
           format: uuid
           title: ユーザーID
       - in: query
+        name: updated_at
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: writing_state
         schema:
           type: string
@@ -782,7 +725,6 @@ paths:
       security:
       - tokenAuth: []
       - jwtAuth: []
-      - {}
       responses:
         '200':
           content:
@@ -831,7 +773,6 @@ paths:
       security:
       - tokenAuth: []
       - jwtAuth: []
-      - {}
       responses:
         '200':
           content:
@@ -921,6 +862,292 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/items/{id}/cancel/:
+    put:
+      operationId: items_cancel_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Item'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Item'
+        required: true
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+    patch:
+      operationId: items_cancel_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+  /api/items/{id}/complete/:
+    put:
+      operationId: items_complete_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Item'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Item'
+        required: true
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+    patch:
+      operationId: items_complete_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+  /api/items/{id}/like-toggle/:
+    put:
+      operationId: items_like_toggle_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Item'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Item'
+        required: true
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+    patch:
+      operationId: items_like_toggle_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+  /api/items/{id}/purchase/:
+    put:
+      operationId: items_purchase_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Item'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Item'
+        required: true
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+    patch:
+      operationId: items_purchase_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+  /api/items/profile/like/:
+    get:
+      operationId: items_profile_like_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - items
+      security:
+      - tokenAuth: []
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedItemList'
+          description: ''
   /api/messages/:
     get:
       operationId: messages_retrieve
@@ -1083,25 +1310,13 @@ components:
     Image:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        photo:
+        order:
+          type: integer
+        photo_path:
           type: string
           format: uri
-        uploaded_at:
-          type: string
-          format: date-time
-          readOnly: true
-        parent_item:
-          type: string
-          format: uuid
       required:
-      - id
-      - parent_item
-      - photo
-      - uploaded_at
+      - photo_path
     Item:
       type: object
       properties:
@@ -1109,10 +1324,18 @@ components:
           type: string
           format: uuid
           readOnly: true
-        image_set:
+        seller:
+          type: string
+          readOnly: true
+        receivable_campus:
+          type: string
+        images:
           type: array
           items:
             $ref: '#/components/schemas/Image'
+        is_liked_by_current_user:
+          type: string
+          readOnly: true
         listing_status:
           $ref: '#/components/schemas/ListingStatusEnum'
         price:
@@ -1131,28 +1354,27 @@ components:
           type: string
           format: date-time
           readOnly: true
-        seller:
+        updated_at:
           type: string
-          format: uuid
-          title: ユーザーID
+          format: date-time
+          readOnly: true
         buyer:
           type: string
           format: uuid
           title: ユーザーID
           nullable: true
-        receivable_campus:
-          type: string
-          format: uuid
       required:
       - condition
       - created_at
       - description
       - id
-      - image_set
+      - images
+      - is_liked_by_current_user
       - name
       - price
       - receivable_campus
       - seller
+      - updated_at
       - writing_state
     ListingStatusEnum:
       enum:
@@ -1271,10 +1493,18 @@ components:
           type: string
           format: uuid
           readOnly: true
-        image_set:
+        seller:
+          type: string
+          readOnly: true
+        receivable_campus:
+          type: string
+        images:
           type: array
           items:
             $ref: '#/components/schemas/Image'
+        is_liked_by_current_user:
+          type: string
+          readOnly: true
         listing_status:
           $ref: '#/components/schemas/ListingStatusEnum'
         price:
@@ -1293,18 +1523,15 @@ components:
           type: string
           format: date-time
           readOnly: true
-        seller:
+        updated_at:
           type: string
-          format: uuid
-          title: ユーザーID
+          format: date-time
+          readOnly: true
         buyer:
           type: string
           format: uuid
           title: ユーザーID
           nullable: true
-        receivable_campus:
-          type: string
-          format: uuid
     PatchedUser:
       type: object
       properties:
@@ -1355,13 +1582,14 @@ components:
       - current_password
       - new_email
       - re_new_email
-    TokenCreate:
+    TokenBlacklist:
       type: object
       properties:
-        password:
+        refresh:
           type: string
-        email:
-          type: string
+          writeOnly: true
+      required:
+      - refresh
     TokenObtainPair:
       type: object
       properties:
@@ -1394,14 +1622,6 @@ components:
       required:
       - access
       - refresh
-    TokenVerify:
-      type: object
-      properties:
-        token:
-          type: string
-          writeOnly: true
-      required:
-      - token
     University:
       type: object
       properties:
