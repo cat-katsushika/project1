@@ -15,5 +15,8 @@ pipenv install
 pipenv run python manage.py makemigrations
 pipenv run python manage.py migrate
 
+# テストデータの作成
+pipenv run python manage.py loaddata */fixtures/*.josn
+
 # Djangoの開発サーバーの起動
 pipenv run python manage.py runserver
