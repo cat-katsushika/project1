@@ -7,6 +7,7 @@ bashが使える環境(linux, mac, wslとか)で
 を実行する
 
 ### テストデータ
+上記./start_django.shの実行と共に作成される。
 ```
 管理画面ログイン用
 email: admin@ed.tus.ac.jp
