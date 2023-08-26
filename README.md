@@ -6,6 +6,18 @@ bashが使える環境(linux, mac, wslとか)で
 ```
 を実行する
 
+### テストデータ
+```
+管理画面ログイン用
+email: admin@ed.tus.ac.jp
+password: admin
+```
+```
+テストユーザー
+email: example@ed.tus.ac.jp
+password: example
+```
+
 ### swaggerの参照
 上記のapiサーバーの立ち上げを行った上で、下記URLから参照可能。
 ```
