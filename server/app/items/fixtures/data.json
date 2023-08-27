@@ -1,1 +1,19 @@
-[]
+[
+	{
+		"model": "items.item",
+		"pk": "6fd2f1142af84d4586586d64324be72d",
+		"fields": {
+			"price": 1000,
+			"name": "example01",
+			"description": "example",
+			"writing_state": "none",
+			"created_at": "2023-08-27 14:37:31.169176",
+			"buyer_id": "9381b38088ec4b7fbcce68e95e4901ea",
+			"receivable_campus_id": "8b9af37b20b844c6a6bd25f876c5a89c",
+			"seller_id": "e04fd163794c444fb7b5876bf3550aea",
+			"listing_status": "unpurchased",
+			"updated_at": "2023-08-27 14:37:31.169204",
+			"condition": "brand_new"
+		}
+	}
+]
