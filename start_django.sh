@@ -8,6 +8,9 @@ fi
 # プロジェクトのディレクトリに移動
 cd ./server/app || { echo "ディレクトリの移動に失敗しました。"; exit 1; }
 
+# データベースの削除
+rm -rf db.sqlite3
+
 # Pipfileからの依存関係のインストール
 pipenv install
 pipenv install --dev
