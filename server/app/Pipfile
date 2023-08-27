@@ -10,6 +10,7 @@ djangorestframework = "==3.14.0"
 django-filter = "*"
 djoser = "==2.2.0"
 djangorestframework-simplejwt = "*"
+django-environ = "*"
 
 [dev-packages]
 black = "*"

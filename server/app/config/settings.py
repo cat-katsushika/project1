@@ -14,6 +14,10 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+import environ
+
+env = environ.Env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -147,13 +151,29 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "accounts.authentication.CookieJWTAuthentication",
     ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+CLIENT_URL = env("CLIENT_URL")
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True  # どのリクエストでも許可
+    CORS_ALLOW_CREDENTIALS = True  # Cookieの送信の許可
+else:
+    CORS_ORIGIN_WHITELIST = [CLIENT_URL]  # ホワイトリストに設定したCLIENT_URL（今回はNode.js）のみリクエストを許可
+    CORS_ALLOWED_ORIGINS = [CLIENT_URL]
+# CSRFトークンの設定
+CSRF_TRUSTED_ORIGINS = [CLIENT_URL]
+
+# CORS(クロスドメインリクエスト)でCookieを送信することを許可
+CORS_ALLOW_CREDENTIALS = True
+# HTTPSの設定とクロスドメインの許可設定
+if DEBUG:
+    SESSION_COOKIE_SECURE = False
+else:
+    SESSION_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_SECURE = True
 
 SIMPLE_JWT = {
     # アクセストークン(1時間)
@@ -165,6 +185,7 @@ SIMPLE_JWT = {
     # 認証トークン
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
+
 
 # ローカル確認用
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
