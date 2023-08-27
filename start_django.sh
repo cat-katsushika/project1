@@ -24,7 +24,7 @@ pipenv run python manage.py makemigrations
 pipenv run python manage.py migrate
 
 # テストデータの作成
-pipenv run python manage.py loaddata accounts/fixtures/data.json
+pipenv run python manage.py loaddata accounts/fixtures/data.json campusses/fixtures/data.json
 
 # Djangoの開発サーバーの起動
 pipenv run python manage.py runserver
