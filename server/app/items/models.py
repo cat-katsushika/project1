@@ -17,7 +17,7 @@ class Item(models.Model):
         CANCELED = "canceled", "キャンセル済み"
 
     class Condition(models.TextChoices):
-        NEW = "new", "未使用"
+        BRAND_NEW = "brand_new", "未使用"
         FINE = "fine", "目立った傷や汚れなし"
         USED = "used", "使用感あり"
         DAMAGED = "damaged", "破損あり"
@@ -38,7 +38,7 @@ class Item(models.Model):
     name = models.CharField(max_length=50)
     # MEMO: Textにする？文字数制限どうする？
     description = models.CharField(max_length=255)
-    condition = models.CharField(max_length=7, choices=Condition.choices)
+    condition = models.CharField(max_length=9, choices=Condition.choices)
     writing_state = models.CharField(max_length=6, choices=WritingState.choices)
     receivable_campus = models.ForeignKey(Campus, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
