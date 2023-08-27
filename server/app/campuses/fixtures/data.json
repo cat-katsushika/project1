@@ -7,7 +7,7 @@
 		}
 	},
 	{
-		"model": "campuses.campuses",
+		"model": "campuses.campus",
 		"pk": "8b9af37b20b844c6a6bd25f876c5a89c",
 		"fields": {
 			"campus": "katushika",
