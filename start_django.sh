@@ -10,6 +10,7 @@ cd ./server/app || { echo "ディレクトリの移動に失敗しました。";
 
 # Pipfileからの依存関係のインストール
 pipenv install
+pipenv install --dev
 
 # マイグレーションの実行
 pipenv run python manage.py makemigrations
