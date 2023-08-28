@@ -9,7 +9,7 @@ fi
 cd ./server/app || { echo "ディレクトリの移動に失敗しました。"; exit 1; }
 
 if [ -e .env.sample ]; then
-    mv .env.sample .env
+    cp .env.sample .env
 fi
 
 # データベースの削除
