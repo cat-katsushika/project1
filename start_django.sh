@@ -9,7 +9,7 @@ fi
 cd ./server/app || { echo "ディレクトリの移動に失敗しました。"; exit 1; }
 
 if [ -e .env.sample ]; then
-    mv .env.sample .env
+    cp .env.sample .env
 fi
 
 # データベースの削除
@@ -17,7 +17,6 @@ rm -rf db.sqlite3
 
 # Pipfileからの依存関係のインストール
 pipenv install
-pipenv install --dev
 
 # マイグレーションの実行
 pipenv run python manage.py makemigrations
