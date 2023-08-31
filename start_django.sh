@@ -27,4 +27,4 @@ pipenv run python manage.py migrate
 pipenv run python manage.py loaddata accounts/fixtures/data.json campuses/fixtures/data.json items/fixtures/data.json
 
 # Djangoの開発サーバーの起動
-pipenv run python manage.py runserver
+pipenv run python manage.py runserver --settings=config.settings.dev
