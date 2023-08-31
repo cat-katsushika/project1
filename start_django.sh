@@ -26,5 +26,8 @@ pipenv run python manage.py migrate
 # テストデータの作成
 pipenv run python manage.py loaddata accounts/fixtures/data.json campuses/fixtures/data.json items/fixtures/data.json
 
+# 設定の更新
+export DJANGO_SETTINGS_MODULE=config.settings.dev
+
 # Djangoの開発サーバーの起動
 pipenv run python manage.py runserver --settings=config.settings.dev
