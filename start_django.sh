@@ -20,11 +20,11 @@ pipenv install
 pipenv install --dev
 
 # マイグレーションの実行
-pipenv run python manage.py makemigrations
-pipenv run python manage.py migrate
+pipenv run python manage.py makemigrations --settings=config.settings.dev
+pipenv run python manage.py migrate --settings=config.settings.dev
 
 # テストデータの作成
-pipenv run python manage.py loaddata accounts/fixtures/data.json campuses/fixtures/data.json items/fixtures/data.json
+pipenv run python manage.py loaddata accounts/fixtures/data.json campuses/fixtures/data.json items/fixtures/data.json --settings=config.settings.dev
 
 # 設定の更新
 export DJANGO_SETTINGS_MODULE=config.settings.dev
