@@ -9,3 +9,8 @@ STATIC_ROOT = "/usr/share/nginx/html/static"  # 静的ファイルを集める�
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = "/usr/share/nginx/html/media"
+
+DATABASES = {
+    "default": env.db(),
+}
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
