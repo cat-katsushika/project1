@@ -50,8 +50,6 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework.authtoken",
     "djoser",
-    "drf_spectacular",
-    "drf_spectacular_sidecar",
     # Original apps
     "accounts",
     "campuses",
@@ -154,7 +152,6 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "accounts.authentication.CookieJWTAuthentication",
     ],
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 CLIENT_URL = env("CLIENT_URL")
