@@ -17,3 +17,8 @@ EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = "elephant@uni-bo.net"
+
+DATABASES = {
+    "default": env.db(),
+}
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
