@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Item, Image
+from PIL import Image as PILImage
+import io
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -44,6 +46,7 @@ class ItemSerializer(serializers.ModelSerializer):
         images_data = validated_data.pop("images")
         item = Item.objects.create(**validated_data)
         self.create_images(item, images_data)
+        self.process_images(item)
         return item
 
     def create_images(self, item, images_data):
@@ -54,6 +57,7 @@ class ItemSerializer(serializers.ModelSerializer):
         images_data = validated_data.pop("images")
         item = super().update(instance, validated_data)
         self.update_images(item, images_data)
+        self.process_images(item)
         return instance
 
     def update_images(self, item, images_data):
@@ -75,3 +79,21 @@ class ItemSerializer(serializers.ModelSerializer):
         for image in existing_images:
             if image.id not in image_data_ids:
                 image.delete()
+
+    def process_images(self, item):
+        for image in item.images.all():
+            self.convert_to_jpeg(image)
+
+    def convert_to_jpeg(self, image):
+        if image.format != "JPEG":
+            try:
+                # 画像を開いてRGB形式に変換
+                img = PILImage.open(image.photo_path)
+                img = img.convert("RGB")
+                # 画像をJPEG形式で保存するためのバッファを作成
+                buffer = io.BytesIO()
+                img.save(buffer, format="JPEG")
+                # バッファの内容をファイルオブジェクトに書き込む
+                image.photo_path.save(image.photo_path.name, content=ContentFile(buffer.getvalue()), save=False)
+            except Exception:
+                raise serializers.ValidationError("画像の変換に失敗しました。")
