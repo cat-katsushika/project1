@@ -1,4 +1,4 @@
-from .base import *
+from .base import *  # noqa: F403 # flake8のエラーを無視
 
 DEBUG = True
 

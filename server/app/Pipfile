@@ -11,6 +11,7 @@ django-filter = "*"
 djoser = "==2.2.0"
 djangorestframework-simplejwt = "*"
 django-environ = "*"
+django-cors-headers = "==4.2.0"
 
 [dev-packages]
 black = "*"
