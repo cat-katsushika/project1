@@ -49,10 +49,13 @@ class Item(models.Model):
         return self.name
 
 
-# MEMO: URLにユーザーIDいらないかも
-# アップロード先のパス: <MEDIA_ROOT>/images/items/<出品者のユーザーID>/<ファイル名>
+# アップロード先のパス: <MEDIA_ROOT>/images/items/<商品のID>/<ランダムな文字列>.<拡張子>
 def get_item_image_path(instance, filename):
-    return "images/items/{0}/{1}".format(instance.parent_item.seller.id, filename)
+    parent_item_id = instance.parent_item.id
+    random_name = uuid.uuid4().hex
+    ext = filename.split(".")[-1]
+    filename = f"{random_name}.{ext}"
+    return f"images/items/{parent_item_id}/{filename}"
 
 
 class Image(models.Model):
