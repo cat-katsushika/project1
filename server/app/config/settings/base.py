@@ -157,14 +157,12 @@ REST_FRAMEWORK = {
 }
 
 CLIENT_URL = env("CLIENT_URL")
-# if DEBUG:
-#     CORS_ALLOW_ALL_ORIGINS = True  # どのリクエストでも許可
-#     CORS_ALLOW_CREDENTIALS = True  # Cookieの送信の許可
-# else:
-#     CORS_ORIGIN_WHITELIST = [CLIENT_URL]  # ホワイトリストに設定したCLIENT_URL（今回はNode.js）のみリクエストを許可
-#     CORS_ALLOWED_ORIGINS = [CLIENT_URL]
-CORS_ORIGIN_WHITELIST = [CLIENT_URL]  # ホワイトリストに設定したCLIENT_URL（今回はNode.js）のみリクエストを許可
-CORS_ALLOWED_ORIGINS = [CLIENT_URL]
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True  # どのリクエストでも許可
+    CORS_ALLOW_CREDENTIALS = True  # Cookieの送信の許可
+else:
+    CORS_ORIGIN_WHITELIST = [CLIENT_URL]  # ホワイトリストに設定したCLIENT_URL（今回はNode.js）のみリクエストを許可
+    CORS_ALLOWED_ORIGINS = [CLIENT_URL]
 # CSRFトークンの設定
 CSRF_TRUSTED_ORIGINS = [CLIENT_URL]
 
