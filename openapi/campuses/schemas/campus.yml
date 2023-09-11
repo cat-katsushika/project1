@@ -1,0 +1,11 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 876ab8c6-423c-4b32-aebe-f7f05d091325
+  campus:
+    type: string
+    example: 東京理科大学葛飾キャンパス
+  university:
+    type: string
+    example: 64ed9201-1a6f-4638-959a-c0335395ba5c

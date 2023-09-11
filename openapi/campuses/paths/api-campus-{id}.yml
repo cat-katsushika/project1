@@ -1,0 +1,24 @@
+get:
+  operationId: campus_retrieve
+  summary: キャンパス詳細取得API
+  description: キャンパスの詳細を取得するためのAPIです。
+  parameters:
+    - in: path
+      name: id
+      description: キャンパスのid
+      schema:
+        type: string
+        format: uuid
+      required: true
+  tags:
+    - campus
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "201":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/campus.yml"
+      description: ""
