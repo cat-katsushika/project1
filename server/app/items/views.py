@@ -1,4 +1,3 @@
-from django_filters import rest_framework as filters
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
@@ -6,12 +5,17 @@ from .models import Item, Like
 from .serializers import ItemSerializer
 
 
+# MEMO: コピペしただけなので、後で整理する
 class ItemListCreateView(generics.ListCreateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    filter_backends = [filters.DjangoFilterBackend]
-    # TODO: フィルタのカスタム
-    filterset_fields = "__all__"
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        name_query = self.request.query_params.get("name", None)
+        if name_query:
+            queryset = queryset.filter(name__icontains=name_query)
+        return queryset
 
 
 class IsOwnerOrAdminOrReadOnly(permissions.BasePermission):
