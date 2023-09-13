@@ -1528,3 +1528,7 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+    AccessTokenAuth:
+      type: apiKey
+      in: cookie
+      name: access_token

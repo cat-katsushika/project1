@@ -11,8 +11,7 @@ post:
           $ref: "../schemas/create-message.yml"
     required: true
   security:
-    - tokenAuth: []
-    - jwtAuth: []
+    - AccessTokenAuth: []
   responses:
     "201":
       content:
