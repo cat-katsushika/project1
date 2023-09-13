@@ -1,0 +1,18 @@
+get:
+  operationId: university_retrieve
+  summary: 大学一覧取得API
+  description: 大学一覧取得API
+  tags:
+    - university
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/university.yml"
+      description: ""
