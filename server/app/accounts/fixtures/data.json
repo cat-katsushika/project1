@@ -1,0 +1,34 @@
+[
+	{
+		"model": "accounts.user",
+		"pk": "9381b38088ec4b7fbcce68e95e4901ea",
+		"fields": {
+			"password": "pbkdf2_sha256$600000$cAUXoU2XTnNEjUCpl5hvh4$aiqUr7K8x20S4ga9jbz9HmnmFB6HruSP/be3Mo4j36k=",
+			"last_login": null,
+			"is_superuser": false,
+			"email": "example@ed.tus.ac.jp",
+			"is_staff": false,
+			"is_active": true,
+			"created_at": "2023-08-26 15:05:02.952944",
+			"updated_at": "2023-08-26 15:05:02.954819",
+			"groups": [],
+			"user_permissions": []
+		}
+	},
+	{
+		"model": "accounts.user",
+		"pk": "e04fd163794c444fb7b5876bf3550aea",
+		"fields": {
+			"password": "pbkdf2_sha256$600000$H23gTn30fGm7fRSN9lRHp5$AVPliIxxKu56THuCn6h/nTwoQsOrtBt2hUTEO1FJ2Q0=",
+			"last_login": null,
+			"is_superuser": true,
+			"email": "admin@ed.tus.ac.jp",
+			"is_staff": true,
+			"is_active": true,
+			"created_at": "2023-08-26 15:08:32.887509",
+			"updated_at": "2023-08-26 15:08:32.888582",
+			"groups": [],
+			"user_permissions": []
+		}
+	}
+]

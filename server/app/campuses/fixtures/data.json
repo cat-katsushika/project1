@@ -1,0 +1,17 @@
+[
+	{
+		"model": "campuses.university",
+		"pk": "725d1e204aa447439111280d9caa4244",
+		"fields": {
+			"name": "TUS"
+		}
+	},
+	{
+		"model": "campuses.campus",
+		"pk": "8b9af37b20b844c6a6bd25f876c5a89c",
+		"fields": {
+			"campus": "katushika",
+			"university_id": "725d1e204aa447439111280d9caa4244"
+		}
+	}
+]
