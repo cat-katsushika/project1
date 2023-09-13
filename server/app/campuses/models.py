@@ -4,6 +4,9 @@ from django.db import models
 
 
 class University(models.Model):
+    class Meta:
+        app_label = "campuses"
+
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
     name = models.CharField(max_length=100)
 
