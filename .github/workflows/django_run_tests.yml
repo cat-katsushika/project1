@@ -32,3 +32,4 @@ jobs:
       working-directory: ./server/app
       env:
         DJANGO_SETTINGS_MODULE: config.settings.dev
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
