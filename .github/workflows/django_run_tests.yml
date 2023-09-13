@@ -28,7 +28,7 @@ jobs:
     # 依存関係のインストール
     - name: Install dependencies
       run: |
-        pipenv install --deploy --ignore-pipfile
+        pipenv install --dev
       working-directory: ./server/app
     - name: Run Tests
       run: |
