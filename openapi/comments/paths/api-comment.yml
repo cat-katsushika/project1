@@ -2,6 +2,14 @@ get:
   operationId: comment_retrieve
   summary: コメント一覧取得API
   description: コメント一覧取得API
+  parameters:
+    - name: item_id
+      in: query
+      description: コメントを取得したい商品のidを指定
+      required: false
+      schema:
+        type: string
+        format: uuid
   tags:
     - comment
   security:
