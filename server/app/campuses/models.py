@@ -15,6 +15,9 @@ class University(models.Model):
 
 
 class Campus(models.Model):
+    class Meta:
+        app_label = "campuses"
+
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
     university = models.ForeignKey(University, on_delete=models.CASCADE)
     campus = models.CharField(max_length=100)
