@@ -1,0 +1,21 @@
+post:
+  operationId: comment_create_create
+  summary: コメント作成API
+  description: コメント作成API
+  tags:
+    - comment
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/create-comment.yml"
+    required: true
+  security:
+    - AccessTokenAuth: []
+  responses:
+    "201":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/comment.yml"
+      description: ""

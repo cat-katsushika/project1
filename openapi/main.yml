@@ -3,6 +3,11 @@ info:
   title: 教科書・参考書取引所 OpenAPI
   version: 1.0.0
   description: 教科書・参考書取引所 OpenAPI Schema
+servers:
+  - url: http://localhost:8000
+    description: 開発用サーバー
+  - url: https://uni-bo.net
+    description: 本番用サーバー
 paths:
   /api/auth/jwt/create/:
     post:
@@ -12,26 +17,26 @@ paths:
         Takes a set of user credentials and returns an access and refresh JSON web
         token pair to prove the authentication of those credentials.
       tags:
-      - jwt
+        - jwt
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: "#/components/schemas/TokenObtainPair"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: "#/components/schemas/TokenObtainPair"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: "#/components/schemas/TokenObtainPair"
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenObtainPair'
-          description: ''
+                $ref: "#/components/schemas/TokenObtainPair"
+          description: ""
   /api/auth/jwt/refresh/:
     post:
       summary: リフレッシュ(アクセストークン再発行)
@@ -40,26 +45,26 @@ paths:
         Takes a refresh type JSON web token and returns an access type JSON web
         token if the refresh token is valid.
       tags:
-      - jwt
+        - jwt
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: "#/components/schemas/TokenRefresh"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: "#/components/schemas/TokenRefresh"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: "#/components/schemas/TokenRefresh"
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenRefresh'
-          description: ''
+                $ref: "#/components/schemas/TokenRefresh"
+          description: ""
   /api/auth/logout/:
     post:
       summary: ログアウト
@@ -68,75 +73,75 @@ paths:
         Takes a token and blacklists it. Must be used with the
         `rest_framework_simplejwt.token_blacklist` app installed.
       tags:
-      - jwt
+        - jwt
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenBlacklist'
+              $ref: "#/components/schemas/TokenBlacklist"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenBlacklist'
+              $ref: "#/components/schemas/TokenBlacklist"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenBlacklist'
+              $ref: "#/components/schemas/TokenBlacklist"
         required: true
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenBlacklist'
-          description: 'ログアウト成功'
+                $ref: "#/components/schemas/TokenBlacklist"
+          description: "ログアウト成功"
   /api/auth/users/:
-  #   get:
-  #     operationId: auth_users_list
-  #     parameters:
-  #     - name: page
-  #       required: false
-  #       in: query
-  #       description: A page number within the paginated result set.
-  #       schema:
-  #         type: integer
-  #     tags:
-  #     - auth
-  #     security:
-  #     - jwtAuth: []
-  #     responses:
-  #       '200':
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/PaginatedUserList'
-  #         description: ''
+    #   get:
+    #     operationId: auth_users_list
+    #     parameters:
+    #     - name: page
+    #       required: false
+    #       in: query
+    #       description: A page number within the paginated result set.
+    #       schema:
+    #         type: integer
+    #     tags:
+    #     - auth
+    #     security:
+    #     - jwtAuth: []
+    #     responses:
+    #       '200':
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: '#/components/schemas/PaginatedUserList'
+    #         description: ''
     post:
       summary: サインアップ
       operationId: auth_users_create
       tags:
-      - auth
+        - auth
       description: ユーザー登録後Emailを送信
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreate'
+              $ref: "#/components/schemas/UserCreate"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserCreate'
+              $ref: "#/components/schemas/UserCreate"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserCreate'
+              $ref: "#/components/schemas/UserCreate"
         required: true
       security:
-      - jwtAuth: []
-      - {}
+        - jwtAuth: []
+        - {}
       responses:
-        '201':
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserCreate'
-          description: 'サインアップ成功'
+                $ref: "#/components/schemas/UserCreate"
+          description: "サインアップ成功"
         400:
           description: サインアップ失敗
           content:
@@ -163,7 +168,6 @@ paths:
                 メールアドレス大学ドメイン制約:
                   value:
                     - detail: メールアドレスの形式は「@ed.tus.ac.jp」です
-
 
   # /api/auth/users/{id}/:
   #   get:
@@ -278,1038 +282,875 @@ paths:
       summary: アカウント有効化
       operationId: auth_users_activation_create
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Activation'
+              $ref: "#/components/schemas/Activation"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Activation'
+              $ref: "#/components/schemas/Activation"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Activation'
+              $ref: "#/components/schemas/Activation"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
-      - {}
+        - tokenAuth: []
+        - jwtAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Activation'
-          description: ''
+                $ref: "#/components/schemas/Activation"
+          description: ""
   /api/auth/users/me/:
     get:
       summary: ユーザー詳細取得API
       operationId: auth_users_me_retrieve
       tags:
-      - auth
+        - auth
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-          description: ''
+                $ref: "#/components/schemas/User"
+          description: ""
     put:
       summary: ユーザー情報変更API
       operationId: auth_users_me_update
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-          description: ''
+                $ref: "#/components/schemas/User"
+          description: ""
     patch:
       summary: ユーザー情報一部変更API
       operationId: auth_users_me_partial_update
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: "#/components/schemas/PatchedUser"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: "#/components/schemas/PatchedUser"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedUser'
+              $ref: "#/components/schemas/PatchedUser"
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-          description: ''
+                $ref: "#/components/schemas/User"
+          description: ""
     delete:
       summary: ユーザー情報削除API
       operationId: auth_users_me_destroy
       tags:
-      - auth
+        - auth
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '204':
+        "204":
           description: No response body
   /api/auth/users/resend_activation/:
     post:
       operationId: auth_users_resend_activation_create
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SendEmailReset'
+              $ref: "#/components/schemas/SendEmailReset"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/SendEmailReset'
+              $ref: "#/components/schemas/SendEmailReset"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/SendEmailReset'
+              $ref: "#/components/schemas/SendEmailReset"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
-      - {}
+        - tokenAuth: []
+        - jwtAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SendEmailReset'
-          description: ''
+                $ref: "#/components/schemas/SendEmailReset"
+          description: ""
   /api/auth/users/reset_email/:
     post:
       operationId: auth_users_reset_email_create
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SendEmailReset'
+              $ref: "#/components/schemas/SendEmailReset"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/SendEmailReset'
+              $ref: "#/components/schemas/SendEmailReset"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/SendEmailReset'
+              $ref: "#/components/schemas/SendEmailReset"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
-      - {}
+        - tokenAuth: []
+        - jwtAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SendEmailReset'
-          description: ''
+                $ref: "#/components/schemas/SendEmailReset"
+          description: ""
   /api/auth/users/reset_email_confirm/:
     post:
       operationId: auth_users_reset_email_confirm_create
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UsernameResetConfirm'
+              $ref: "#/components/schemas/UsernameResetConfirm"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UsernameResetConfirm'
+              $ref: "#/components/schemas/UsernameResetConfirm"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UsernameResetConfirm'
+              $ref: "#/components/schemas/UsernameResetConfirm"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
-      - {}
+        - tokenAuth: []
+        - jwtAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsernameResetConfirm'
-          description: ''
+                $ref: "#/components/schemas/UsernameResetConfirm"
+          description: ""
   /api/auth/users/reset_password/:
     post:
       operationId: auth_users_reset_password_create
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SendEmailReset'
+              $ref: "#/components/schemas/SendEmailReset"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/SendEmailReset'
+              $ref: "#/components/schemas/SendEmailReset"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/SendEmailReset'
+              $ref: "#/components/schemas/SendEmailReset"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
-      - {}
+        - tokenAuth: []
+        - jwtAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SendEmailReset'
-          description: ''
+                $ref: "#/components/schemas/SendEmailReset"
+          description: ""
   /api/auth/users/reset_password_confirm/:
     post:
       operationId: auth_users_reset_password_confirm_create
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PasswordResetConfirm'
+              $ref: "#/components/schemas/PasswordResetConfirm"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PasswordResetConfirm'
+              $ref: "#/components/schemas/PasswordResetConfirm"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PasswordResetConfirm'
+              $ref: "#/components/schemas/PasswordResetConfirm"
         required: true
       security:
-      - jwtAuth: []
-      - {}
+        - jwtAuth: []
+        - {}
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PasswordResetConfirm'
-          description: ''
+                $ref: "#/components/schemas/PasswordResetConfirm"
+          description: ""
   /api/auth/users/set_email/:
     post:
       operationId: auth_users_set_email_create
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SetUsernameRetype'
+              $ref: "#/components/schemas/SetUsernameRetype"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/SetUsernameRetype'
+              $ref: "#/components/schemas/SetUsernameRetype"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/SetUsernameRetype'
+              $ref: "#/components/schemas/SetUsernameRetype"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SetUsernameRetype'
-          description: ''
+                $ref: "#/components/schemas/SetUsernameRetype"
+          description: ""
   /api/auth/users/set_password/:
     post:
       operationId: auth_users_set_password_create
       tags:
-      - auth
+        - auth
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SetPasswordRetype'
+              $ref: "#/components/schemas/SetPasswordRetype"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/SetPasswordRetype'
+              $ref: "#/components/schemas/SetPasswordRetype"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/SetPasswordRetype'
+              $ref: "#/components/schemas/SetPasswordRetype"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SetPasswordRetype'
-          description: ''
+                $ref: "#/components/schemas/SetPasswordRetype"
+          description: ""
   /api/campus/:
-    get:
-      operationId: campus_list
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      tags:
-      - campus
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedCampusList'
-          description: ''
+    $ref: "./campuses/paths/api-campus.yml"
   /api/campus/{id}/:
-    get:
-      operationId: campus_retrieve
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - campus
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Campus'
-          description: ''
+    $ref: "./campuses/paths/api-campus-{id}.yml"
   /api/comment/:
-    get:
-      operationId: comment_retrieve
-      summary: コメント一覧取得API
-      description: コメント一覧取得API
-      tags:
-      - comment
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Comment'
-          description: 'コメント一覧取得成功'
+    $ref: "./comments/paths/api-comment.yml"
   /api/comment/create/:
-    post:
-      operationId: comment_create_create
-      summary: コメント作成API
-      description: コメント作成API
-      tags:
-      - comment
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Comment'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Comment'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Comment'
-        required: true
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Comment'
-          description: ''
+    $ref: "./comments/paths/api-comment-create.yml"
   /api/items/:
     get:
       operationId: items_list
       summary: 商品一覧取得API
       description: 商品一覧取得API
       parameters:
-      - in: query
-        name: buyer
-        schema:
-          type: string
-          format: uuid
-          title: ユーザーID
-      - in: query
-        name: condition
-        schema:
-          type: string
-          enum:
-          - damaged
-          - fine
-          - new
-          - used
-        description: |-
-          * `new` - 未使用
-          * `fine` - 目立った傷や汚れなし
-          * `used` - 使用感あり
-          * `damaged` - 破損あり
-      - in: query
-        name: created_at
-        schema:
-          type: string
-          format: date-time
-      - in: query
-        name: description
-        schema:
-          type: string
-      - in: query
-        name: id
-        schema:
-          type: string
-          format: uuid
-      - in: query
-        name: listing_status
-        schema:
-          type: string
-          enum:
-          - canceled
-          - completed
-          - purchased
-          - unpurchased
-        description: |-
-          * `unpurchased` - 未購入
-          * `purchased` - 購入済み
-          * `completed` - 取引完了
-          * `canceled` - キャンセル済み
-      - in: query
-        name: name
-        schema:
-          type: string
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      - in: query
-        name: price
-        schema:
-          type: integer
-      - in: query
-        name: receivable_campus
-        schema:
-          type: string
-          format: uuid
-      - in: query
-        name: seller
-        schema:
-          type: string
-          format: uuid
-          title: ユーザーID
-      - in: query
-        name: updated_at
-        schema:
-          type: string
-          format: date-time
-      - in: query
-        name: writing_state
-        schema:
-          type: string
-          enum:
-          - little
-          - lot
-          - none
-        description: |-
-          * `none` - 全くない
-          * `little` - 少しある
-          * `lot` - かなりある
+        - in: query
+          name: buyer
+          schema:
+            type: string
+            format: uuid
+            title: ユーザーID
+        - in: query
+          name: condition
+          schema:
+            type: string
+            enum:
+              - damaged
+              - fine
+              - new
+              - used
+          description: |-
+            * `new` - 未使用
+            * `fine` - 目立った傷や汚れなし
+            * `used` - 使用感あり
+            * `damaged` - 破損あり
+        - in: query
+          name: created_at
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: description
+          schema:
+            type: string
+        - in: query
+          name: id
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: listing_status
+          schema:
+            type: string
+            enum:
+              - canceled
+              - completed
+              - purchased
+              - unpurchased
+          description: |-
+            * `unpurchased` - 未購入
+            * `purchased` - 購入済み
+            * `completed` - 取引完了
+            * `canceled` - キャンセル済み
+        - in: query
+          name: name
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - in: query
+          name: price
+          schema:
+            type: integer
+        - in: query
+          name: receivable_campus
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: seller
+          schema:
+            type: string
+            format: uuid
+            title: ユーザーID
+        - in: query
+          name: updated_at
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: writing_state
+          schema:
+            type: string
+            enum:
+              - little
+              - lot
+              - none
+          description: |-
+            * `none` - 全くない
+            * `little` - 少しある
+            * `lot` - かなりある
       tags:
-      - items
+        - items
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedItemList'
-          description: ''
+                $ref: "#/components/schemas/PaginatedItemList"
+          description: ""
     post:
       operationId: items_create
       summary: 商品登録API
       description: 商品登録API
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '201':
+        "201":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
   /api/items/{id}/:
     get:
       operationId: items_retrieve
       summary: 商品詳細取得API
       description: 商品詳細取得API
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
     put:
       operationId: items_update
       summary: 商品情報更新API
       description: 商品情報更新API
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
     patch:
       operationId: items_partial_update
       summary: 商品情報一部更新API
       description: 商品情報一部更新API
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                $ref: "#/components/schemas/Item"
           description: 成功
     delete:
       operationId: items_destroy
       summary: 商品削除API
       description: 商品削除API
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '204':
+        "204":
           description: No response body
   /api/items/{id}/cancel/:
     put:
       operationId: items_cancel_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
     patch:
       operationId: items_cancel_partial_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
   /api/items/{id}/complete/:
     put:
       operationId: items_complete_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
     patch:
       operationId: items_complete_partial_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
   /api/items/{id}/like-toggle/:
     put:
       operationId: items_like_toggle_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
     patch:
       operationId: items_like_toggle_partial_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
   /api/items/{id}/purchase/:
     put:
       operationId: items_purchase_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Item'
+              $ref: "#/components/schemas/Item"
         required: true
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
     patch:
       operationId: items_purchase_partial_update
       parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
       tags:
-      - items
+        - items
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedItem'
+              $ref: "#/components/schemas/PatchedItem"
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
-          description: ''
+                $ref: "#/components/schemas/Item"
+          description: ""
   /api/items/profile/like/:
     get:
       operationId: items_profile_like_list
       parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
       tags:
-      - items
+        - items
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedItemList'
-          description: ''
+                $ref: "#/components/schemas/PaginatedItemList"
+          description: ""
   /api/messages/:
-    get:
-      operationId: messages_retrieve
-      tags:
-      - messages
-      security:
-      - jwtAuth: []
-      responses:
-        '200':
-          description: '成功'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Message'
-
+    $ref: "./transaction_messages/paths/api-messages.yml"
   /api/messages/create/:
-    post:
-      operationId: messages_create_create
-      tags:
-      - messages
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Message'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Message'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Message'
-        required: true
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Message'
-          description: ''
+    $ref: "./transaction_messages/paths/api-messages-create.yml"
   /api/university/:
-    get:
-      operationId: university_retrieve
-      summary: 大学一覧取得API
-      description: 大学一覧取得API
-      tags:
-      - university
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/University'
-          description: ''
+    $ref: "./campuses/paths/api-university.yml"
   /api/university/{id}/:
-    get:
-      operationId: university_retrieve_2
-      summary: 大学詳細取得API
-      description: 大学詳細取得API
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - university
-      security:
-      - tokenAuth: []
-      - jwtAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/University'
-          description: ''
+    $ref: "./campuses/paths/api-university-{id}.yml"
   /api/users/:
     get:
       operationId: users_list
       parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
       tags:
-      - users
+        - users
       security:
-      - tokenAuth: []
-      - jwtAuth: []
+        - tokenAuth: []
+        - jwtAuth: []
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedUserList'
-          description: ''
+                $ref: "#/components/schemas/PaginatedUserList"
+          description: ""
 components:
   schemas:
     Activation:
@@ -1320,56 +1161,14 @@ components:
         token:
           type: string
       required:
-      - token
-      - uid
-    Campus:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        campus:
-          type: string
-          maxLength: 100
-        university:
-          type: string
-          format: uuid
-      required:
-      - campus
-      - id
-      - university
-    Comment:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        comment:
-          type: string
-          maxLength: 100
-        created_at:
-          type: string
-          format: date-time
-        item_id:
-          type: string
-          format: uuid
-        user:
-          type: string
-          format: uuid
-          title: ユーザーID
-      required:
-      - comment
-      - id
-      - item_id
-      - user
+        - token
+        - uid
     ConditionEnum:
       enum:
-      - new
-      - fine
-      - used
-      - damaged
+        - new
+        - fine
+        - used
+        - damaged
       type: string
       description: |-
         * `new` - 未使用
@@ -1385,7 +1184,7 @@ components:
           type: string
           format: uri
       required:
-      - photo_path
+        - photo_path
     Item:
       type: object
       properties:
@@ -1401,12 +1200,12 @@ components:
         images:
           type: array
           items:
-            $ref: '#/components/schemas/Image'
+            $ref: "#/components/schemas/Image"
         is_liked_by_current_user:
           type: string
           readOnly: true
         listing_status:
-          $ref: '#/components/schemas/ListingStatusEnum'
+          $ref: "#/components/schemas/ListingStatusEnum"
         price:
           type: integer
         name:
@@ -1416,9 +1215,9 @@ components:
           type: string
           maxLength: 255
         condition:
-          $ref: '#/components/schemas/ConditionEnum'
+          $ref: "#/components/schemas/ConditionEnum"
         writing_state:
-          $ref: '#/components/schemas/WritingStateEnum'
+          $ref: "#/components/schemas/WritingStateEnum"
         created_at:
           type: string
           format: date-time
@@ -1433,75 +1232,30 @@ components:
           title: ユーザーID
           nullable: true
       required:
-      - condition
-      - created_at
-      - description
-      - id
-      - images
-      - is_liked_by_current_user
-      - name
-      - price
-      - receivable_campus
-      - seller
-      - updated_at
-      - writing_state
+        - condition
+        - created_at
+        - description
+        - id
+        - images
+        - is_liked_by_current_user
+        - name
+        - price
+        - receivable_campus
+        - seller
+        - updated_at
+        - writing_state
     ListingStatusEnum:
       enum:
-      - unpurchased
-      - purchased
-      - completed
-      - canceled
+        - unpurchased
+        - purchased
+        - completed
+        - canceled
       type: string
       description: |-
         * `unpurchased` - 未購入
         * `purchased` - 購入済み
         * `completed` - 取引完了
         * `canceled` - キャンセル済み
-    Message:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        message:
-          type: string
-          maxLength: 100
-        created_at:
-          type: string
-          format: date-time
-        item_id:
-          type: string
-          format: uuid
-        user:
-          type: string
-          format: uuid
-          title: ユーザーID
-      required:
-      - id
-      - item_id
-      - message
-      - user
-    PaginatedCampusList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Campus'
     PaginatedItemList:
       type: object
       properties:
@@ -1521,7 +1275,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Item'
+            $ref: "#/components/schemas/Item"
     PaginatedUserList:
       type: object
       properties:
@@ -1541,7 +1295,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            $ref: "#/components/schemas/User"
     PasswordResetConfirm:
       type: object
       properties:
@@ -1552,9 +1306,9 @@ components:
         new_password:
           type: string
       required:
-      - new_password
-      - token
-      - uid
+        - new_password
+        - token
+        - uid
     PatchedItem:
       type: object
       properties:
@@ -1570,12 +1324,12 @@ components:
         images:
           type: array
           items:
-            $ref: '#/components/schemas/Image'
+            $ref: "#/components/schemas/Image"
         is_liked_by_current_user:
           type: string
           readOnly: true
         listing_status:
-          $ref: '#/components/schemas/ListingStatusEnum'
+          $ref: "#/components/schemas/ListingStatusEnum"
         price:
           type: integer
         name:
@@ -1585,9 +1339,9 @@ components:
           type: string
           maxLength: 255
         condition:
-          $ref: '#/components/schemas/ConditionEnum'
+          $ref: "#/components/schemas/ConditionEnum"
         writing_state:
-          $ref: '#/components/schemas/WritingStateEnum'
+          $ref: "#/components/schemas/WritingStateEnum"
         created_at:
           type: string
           format: date-time
@@ -1621,7 +1375,7 @@ components:
           type: string
           format: email
       required:
-      - email
+        - email
     SetPasswordRetype:
       type: object
       properties:
@@ -1632,9 +1386,9 @@ components:
         current_password:
           type: string
       required:
-      - current_password
-      - new_password
-      - re_new_password
+        - current_password
+        - new_password
+        - re_new_password
     SetUsernameRetype:
       type: object
       properties:
@@ -1648,9 +1402,9 @@ components:
         re_new_email:
           type: string
       required:
-      - current_password
-      - new_email
-      - re_new_email
+        - current_password
+        - new_email
+        - re_new_email
     TokenBlacklist:
       type: object
       properties:
@@ -1658,7 +1412,7 @@ components:
           type: string
           writeOnly: true
       required:
-      - refresh
+        - refresh
     TokenObtainPair:
       type: object
       properties:
@@ -1675,10 +1429,10 @@ components:
           type: string
           readOnly: true
       required:
-      - access
-      - email
-      - password
-      - refresh
+        - access
+        - email
+        - password
+        - refresh
     TokenRefresh:
       type: object
       properties:
@@ -1689,8 +1443,8 @@ components:
           type: string
           writeOnly: true
       required:
-      - access
-      - refresh
+        - access
+        - refresh
     University:
       type: object
       properties:
@@ -1702,8 +1456,8 @@ components:
           type: string
           maxLength: 100
       required:
-      - id
-      - name
+        - id
+        - name
     User:
       type: object
       properties:
@@ -1718,8 +1472,8 @@ components:
           title: メールアドレス
           maxLength: 350
       required:
-      - email
-      - id
+        - email
+        - id
     UserCreate:
       type: object
       properties:
@@ -1739,10 +1493,10 @@ components:
         re_password:
           type: string
       required:
-      - email
-      - id
-      - password
-      - re_password
+        - email
+        - id
+        - password
+        - re_password
     UsernameResetConfirm:
       type: object
       properties:
@@ -1752,12 +1506,12 @@ components:
           title: メールアドレス
           maxLength: 350
       required:
-      - new_email
+        - new_email
     WritingStateEnum:
       enum:
-      - none
-      - little
-      - lot
+        - none
+        - little
+        - lot
       type: string
       description: |-
         * `none` - 全くない
@@ -1774,3 +1528,7 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Token"
+    AccessTokenAuth:
+      type: apiKey
+      in: cookie
+      name: access_token

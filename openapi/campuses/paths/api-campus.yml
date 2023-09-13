@@ -1,0 +1,18 @@
+get:
+  operationId: campus_list
+  summary: キャンパス一覧取得API
+  description: キャンパスの一覧を取得するためのAPIです。
+  tags:
+    - campus
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/campus.yml"
+      description: ""
