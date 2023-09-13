@@ -21,14 +21,18 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
+    # pipenvのインストール
+    - name: Install pipenv
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install pipenv
+    # 依存関係のインストール
+    - name: Install dependencies
+      run: |
+        pipenv install --deploy --ignore-pipfile
       working-directory: ./server/app
     - name: Run Tests
       run: |
-        python manage.py test
+        pipenv run python manage.py test
       working-directory: ./server/app
       env:
         DJANGO_SETTINGS_MODULE: config.settings.dev
