@@ -584,53 +584,9 @@ paths:
   /api/campus/{id}/:
     $ref: "./campuses/paths/api-campus-{id}.yml"
   /api/comment/:
-    get:
-      operationId: comment_retrieve
-      summary: コメント一覧取得API
-      description: コメント一覧取得API
-      tags:
-        - comment
-      security:
-        - tokenAuth: []
-        - jwtAuth: []
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment"
-          description: "コメント一覧取得成功"
+    $ref: "./comments/paths/api-comment.yml"
   /api/comment/create/:
-    post:
-      operationId: comment_create_create
-      summary: コメント作成API
-      description: コメント作成API
-      tags:
-        - comment
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Comment"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/Comment"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/Comment"
-        required: true
-      security:
-        - tokenAuth: []
-        - jwtAuth: []
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Comment"
-          description: ""
+    $ref: "./comments/paths/api-comment-create.yml"
   /api/items/:
     get:
       operationId: items_list
@@ -1166,49 +1122,9 @@ paths:
                 $ref: "#/components/schemas/PaginatedItemList"
           description: ""
   /api/messages/:
-    get:
-      operationId: messages_retrieve
-      tags:
-        - messages
-      security:
-        - jwtAuth: []
-      responses:
-        "200":
-          description: "成功"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Message"
-
+    $ref: "./transaction_messages/paths/api-messages.yml"
   /api/messages/create/:
-    post:
-      operationId: messages_create_create
-      tags:
-        - messages
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Message"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/Message"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/Message"
-        required: true
-      security:
-        - tokenAuth: []
-        - jwtAuth: []
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Message"
-          description: ""
+    $ref: "./transaction_messages/paths/api-messages-create.yml"
   /api/university/:
     $ref: "./campuses/paths/api-university.yml"
   /api/university/{id}/:
@@ -1247,48 +1163,6 @@ components:
       required:
         - token
         - uid
-    Campus:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        campus:
-          type: string
-          maxLength: 100
-        university:
-          type: string
-          format: uuid
-      required:
-        - campus
-        - id
-        - university
-    Comment:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        comment:
-          type: string
-          maxLength: 100
-        created_at:
-          type: string
-          format: date-time
-        item_id:
-          type: string
-          format: uuid
-        user:
-          type: string
-          format: uuid
-          title: ユーザーID
-      required:
-        - comment
-        - id
-        - item_id
-        - user
     ConditionEnum:
       enum:
         - new
@@ -1382,51 +1256,6 @@ components:
         * `purchased` - 購入済み
         * `completed` - 取引完了
         * `canceled` - キャンセル済み
-    Message:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        message:
-          type: string
-          maxLength: 100
-        created_at:
-          type: string
-          format: date-time
-        item_id:
-          type: string
-          format: uuid
-        user:
-          type: string
-          format: uuid
-          title: ユーザーID
-      required:
-        - id
-        - item_id
-        - message
-        - user
-    PaginatedCampusList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: "#/components/schemas/Campus"
     PaginatedItemList:
       type: object
       properties:

@@ -1,0 +1,22 @@
+post:
+  operationId: messages_create_create
+  summary: メッセージ作成API
+  description: メッセージ作成API
+  tags:
+    - messages
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/create-message.yml"
+    required: true
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "201":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/message.yml"
+      description: "作成に成功した場合"

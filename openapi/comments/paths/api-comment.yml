@@ -1,0 +1,18 @@
+get:
+  operationId: comment_retrieve
+  summary: コメント一覧取得API
+  description: コメント一覧取得API
+  tags:
+    - comment
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/comment.yml"
+      description: "コメント一覧取得成功"
