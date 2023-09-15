@@ -25,6 +25,11 @@ class CampusDetailView(generics.RetrieveAPIView):
     serializer_class = CampusSerializer
 
 
-class CampusListView(generics.ListAPIView):
-    queryset = Campus.objects.all()
-    serializer_class = CampusSerializer
+class CampusListView(APIView):
+    def get(self, request, *args, **kwargs):
+        queryset = Campus.objects.all()
+        university_id = request.query_params.get("university_id", None)
+        if university_id:
+            queryset = queryset.filter(university=university_id)
+        serializer = CampusSerializer(queryset, many=True)
+        return Response(serializer.data)
