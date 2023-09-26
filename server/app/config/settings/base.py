@@ -208,11 +208,11 @@ DJOSER = {
     # パスワード変更時に確認用パスワード必須
     "SET_PASSWORD_RETYPE": True,
     # アカウント本登録用URL
-    "ACTIVATION_URL": "#/activate/{uid}/{token}",
+    "ACTIVATION_URL": "api/auth/user/activate/{uid}/{token}/",
     # メールアドレスリセット完了用URL
-    "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}/",
     # パスワードリセット完了用URL
-    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}/",
     # カスタムユーザー用シリアライザー
     "SERIALIZERS": {
         "user_create": "accounts.serializers.UserSerializer",
