@@ -32,7 +32,6 @@ class Item(models.Model):
     buyer = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name="buy_item"
     )
-    # MEMO: キャンセル済みは未時購入で吸収してもいいかも
     listing_status = models.CharField(max_length=11, choices=ListingStatus.choices, default=ListingStatus.UNPURCHASED)
     price = models.PositiveSmallIntegerField()
     name = models.CharField(max_length=50)

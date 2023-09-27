@@ -16,7 +16,6 @@ class ItemListCreateView(generics.ListCreateAPIView):
     serializer_class = ItemSerializer
     pagination_class = ItemListPagination
 
-    # MEMO: コピペしただけなので、後で整理する
     def get_queryset(self):
         queryset = self.queryset
         name_query = self.request.query_params.get("name", None)
@@ -64,12 +63,13 @@ class ItemPurchaseView(generics.UpdateAPIView):
 class ItemCancelView(generics.UpdateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    permission_classes = [IsOwnerOrAdminOrReadOnly]
 
     def update(self, request, *args, **kwargs):
         item = self.get_object()
 
         item.buyer = None
-        item.listing_status = Item.ListingStatus.UNPURCHASED
+        item.listing_status = Item.ListingStatus.CANCELED
         item.save()
 
         serializer = self.get_serializer(item)
@@ -84,8 +84,7 @@ class ItemCompleteView(generics.UpdateAPIView):
         item = self.get_object()
 
         if item.buyer != request.user:
-            # TODO: エラーメッセージを追加する
-            return Response({"error": ""}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "購入者以外は購入完了できません。"}, status=status.HTTP_400_BAD_REQUEST)
 
         item.listing_status = Item.ListingStatus.COMPLETED
         item.save()
@@ -94,6 +93,7 @@ class ItemCompleteView(generics.UpdateAPIView):
         return Response(serializer.data)
 
 
+# TODO: 改善
 class ItemLikeToggleView(generics.UpdateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
