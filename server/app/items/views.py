@@ -13,8 +13,11 @@ class ItemListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Item.objects.all()
         name_query = self.request.query_params.get("name", None)
+        listing_status_query = self.request.query_params.get("listing_status", None)
         if name_query:
             queryset = queryset.filter(name__icontains=name_query)
+        if listing_status_query:
+            queryset = queryset.filter(listing_status=listing_status_query)
         return queryset
 
 
