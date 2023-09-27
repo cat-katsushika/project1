@@ -14,6 +14,7 @@ class ItemListPagination(PageNumberPagination):
 class ItemListCreateView(generics.ListCreateAPIView):
     queryset = Item.objects.all().order_by("-updated_at")
     serializer_class = ItemSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = ItemListPagination
 
     def get_queryset(self):
@@ -93,7 +94,6 @@ class ItemCompleteView(generics.UpdateAPIView):
         return Response(serializer.data)
 
 
-# TODO: 改善
 class ItemLikeToggleView(generics.UpdateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
@@ -113,10 +113,31 @@ class ItemLikeToggleView(generics.UpdateAPIView):
         return Response(serializer.data)
 
 
-class LikeItemListView(generics.ListAPIView):
+class UserLikeItemListView(generics.ListAPIView):
     serializer_class = ItemSerializer
+    pagination_class = ItemListPagination
 
     def get_queryset(self):
         user = self.request.user
-        liked_items = Item.objects.filter(liked_by__user=user)
-        return liked_items
+        like_items = Item.objects.filter(liked_by__user=user).prefetch_related("liked_by")
+        return like_items
+
+
+class UserSellItemListView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    pagination_class = ItemListPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        sell_items = Item.objects.filter(seller=user).select_related("seller")
+        return sell_items
+
+
+class UserBuyItemListView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    pagination_class = ItemListPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        buy_items = Item.objects.filter(buyer=user).select_related("buyer")
+        return buy_items
