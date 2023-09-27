@@ -1,17 +1,24 @@
 from rest_framework import generics, permissions, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from .models import Item, Like
 from .serializers import ItemSerializer
 
 
-# MEMO: コピペしただけなので、後で整理する
-class ItemListCreateView(generics.ListCreateAPIView):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
+class ItemListPagination(PageNumberPagination):
+    page_size = 20
+    max_page_size = 100
 
+
+class ItemListCreateView(generics.ListCreateAPIView):
+    queryset = Item.objects.all().order_by("-updated_at")
+    serializer_class = ItemSerializer
+    pagination_class = ItemListPagination
+
+    # MEMO: コピペしただけなので、後で整理する
     def get_queryset(self):
-        queryset = Item.objects.all()
+        queryset = self.queryset
         name_query = self.request.query_params.get("name", None)
         listing_status_query = self.request.query_params.get("listing_status", None)
         if name_query:
