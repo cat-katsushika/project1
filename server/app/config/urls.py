@@ -11,6 +11,7 @@ urlpatterns = [
     path("api/messages/", include("transaction_messages.urls")),
     path("api/auth/", include("djoser.urls")),
     path("api/", include("accounts.urls")),
+    path("", include("terms_and_conditions.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
