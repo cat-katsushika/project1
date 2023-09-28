@@ -1,3 +1,4 @@
+import requests
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.middleware.csrf import get_token
@@ -114,3 +115,15 @@ def get_csrf_token(request):
     # CSRFトークンをHTTPOnlyのクッキーにセット
     response.set_cookie("csrftoken", csrf_token, httponly=True)
     return response
+
+
+def user_activation_view(request, uid, token):
+    post_url = request.build_absolute_uri("/api/auth/users/activation/")
+    data = {
+        "uid": uid,
+        "token": token,
+    }
+    response = requests.post(post_url, json=data)
+    if response.status_code == 204:
+        return HttpResponse("アカウント有効化成功")
+    return HttpResponse("アカウント有効化失敗")
