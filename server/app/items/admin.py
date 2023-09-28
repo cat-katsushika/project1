@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Image, Item
+from .models import Image, Item, Like
 
 
 class ImageInline(admin.TabularInline):
@@ -12,3 +12,4 @@ class ItemAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Item, ItemAdmin)
+admin.site.register(Like)

@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, views
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
@@ -14,9 +14,9 @@ class ItemListPagination(PageNumberPagination):
 class ItemListCreateView(generics.ListCreateAPIView):
     queryset = Item.objects.all().order_by("-updated_at")
     serializer_class = ItemSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = ItemListPagination
 
-    # MEMO: コピペしただけなので、後で整理する
     def get_queryset(self):
         queryset = self.queryset
         name_query = self.request.query_params.get("name", None)
@@ -64,12 +64,13 @@ class ItemPurchaseView(generics.UpdateAPIView):
 class ItemCancelView(generics.UpdateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    permission_classes = [IsOwnerOrAdminOrReadOnly]
 
     def update(self, request, *args, **kwargs):
         item = self.get_object()
 
         item.buyer = None
-        item.listing_status = Item.ListingStatus.UNPURCHASED
+        item.listing_status = Item.ListingStatus.CANCELED
         item.save()
 
         serializer = self.get_serializer(item)
@@ -84,8 +85,7 @@ class ItemCompleteView(generics.UpdateAPIView):
         item = self.get_object()
 
         if item.buyer != request.user:
-            # TODO: エラーメッセージを追加する
-            return Response({"error": ""}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "購入者以外は購入完了できません。"}, status=status.HTTP_400_BAD_REQUEST)
 
         item.listing_status = Item.ListingStatus.COMPLETED
         item.save()
@@ -94,29 +94,47 @@ class ItemCompleteView(generics.UpdateAPIView):
         return Response(serializer.data)
 
 
-class ItemLikeToggleView(generics.UpdateAPIView):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
+class ItemLikeToggleView(views.APIView):
+    def post(self, request, *args, **kwargs):
+        item_id = kwargs["pk"]
+        user_id = request.user.id
 
-    def partial_update(self, request, *args, **kwargs):
-        item = self.get_object()
-        user = request.user
+        if not Item.objects.filter(id=item_id).exists():
+            return Response({"error": "商品が存在しません。"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if user in item.liked_by.all():
-            # instance.liked_by.remove(user)
-            Like.objects.get(item=item, user=user).delete()
+        if Like.objects.filter(item_id=item_id, user_id=user_id).exists():
+            Like.objects.filter(item_id=item_id, user_id=user_id).delete()
+            return Response({"message": "いいねを取り消しました。"})
         else:
-            # instance.liked_by.add(user)
-            Like.objects.create(item=item, user=user)
-
-        serializer = self.get_serializer(item)
-        return Response(serializer.data)
+            Like.objects.create(item_id=item_id, user_id=user_id)
+            return Response({"message": "いいねしました。"})
 
 
-class LikeItemListView(generics.ListAPIView):
+class UserLikeItemListView(generics.ListAPIView):
     serializer_class = ItemSerializer
+    pagination_class = ItemListPagination
 
     def get_queryset(self):
         user = self.request.user
-        liked_items = Item.objects.filter(liked_by__user=user)
-        return liked_items
+        like_items = Item.objects.filter(liked_by__user=user).prefetch_related("liked_by")
+        return like_items
+
+
+class UserSellItemListView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    pagination_class = ItemListPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        sell_items = Item.objects.filter(seller=user).select_related("seller")
+        return sell_items
+
+
+class UserBuyItemListView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    pagination_class = ItemListPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        buy_items = Item.objects.filter(buyer=user).select_related("buyer")
+        return buy_items

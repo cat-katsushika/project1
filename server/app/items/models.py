@@ -32,17 +32,14 @@ class Item(models.Model):
     buyer = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name="buy_item"
     )
-    # MEMO: キャンセル済みは未時購入で吸収してもいいかも
     listing_status = models.CharField(max_length=11, choices=ListingStatus.choices, default=ListingStatus.UNPURCHASED)
     price = models.PositiveSmallIntegerField()
     name = models.CharField(max_length=50)
-    # MEMO: Textにする？文字数制限どうする？
     description = models.CharField(max_length=255)
     condition = models.CharField(max_length=8, choices=Condition.choices)
     writing_state = models.CharField(max_length=6, choices=WritingState.choices)
     receivable_campus = models.ForeignKey(Campus, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
-    # MEMO: いるかなと思って追加しといた。いらなかったら消す。
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -79,3 +76,9 @@ class Like(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="liked_by")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["item", "user"], name="unique_like")]
+
+    def __str__(self):
+        return f"{self.user} likes {self.item}"
