@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, views
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
@@ -94,23 +94,20 @@ class ItemCompleteView(generics.UpdateAPIView):
         return Response(serializer.data)
 
 
-class ItemLikeToggleView(generics.UpdateAPIView):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
+class ItemLikeToggleView(views.APIView):
+    def post(self, request, *args, **kwargs):
+        item_id = kwargs["pk"]
+        user_id = request.user.id
 
-    def partial_update(self, request, *args, **kwargs):
-        item = self.get_object()
-        user = request.user
+        if not Item.objects.filter(id=item_id).exists():
+            return Response({"error": "商品が存在しません。"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if user in item.liked_by.all():
-            # instance.liked_by.remove(user)
-            Like.objects.get(item=item, user=user).delete()
+        if Like.objects.filter(item_id=item_id, user_id=user_id).exists():
+            Like.objects.filter(item_id=item_id, user_id=user_id).delete()
+            return Response({"message": "いいねを取り消しました。"})
         else:
-            # instance.liked_by.add(user)
-            Like.objects.create(item=item, user=user)
-
-        serializer = self.get_serializer(item)
-        return Response(serializer.data)
+            Like.objects.create(item_id=item_id, user_id=user_id)
+            return Response({"message": "いいねしました。"})
 
 
 class UserLikeItemListView(generics.ListAPIView):

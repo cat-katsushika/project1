@@ -76,3 +76,9 @@ class Like(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="liked_by")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["item", "user"], name="unique_like")]
+
+    def __str__(self):
+        return f"{self.user} likes {self.item}"
