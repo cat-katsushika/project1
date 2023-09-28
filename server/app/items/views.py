@@ -14,7 +14,6 @@ class ItemListPagination(PageNumberPagination):
 class ItemListCreateView(generics.ListCreateAPIView):
     queryset = Item.objects.all().order_by("-updated_at")
     serializer_class = ItemSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = ItemListPagination
 
     def get_queryset(self):
@@ -113,6 +112,7 @@ class ItemLikeToggleView(views.APIView):
 class UserLikeItemListView(generics.ListAPIView):
     serializer_class = ItemSerializer
     pagination_class = ItemListPagination
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -123,6 +123,7 @@ class UserLikeItemListView(generics.ListAPIView):
 class UserSellItemListView(generics.ListAPIView):
     serializer_class = ItemSerializer
     pagination_class = ItemListPagination
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -133,6 +134,7 @@ class UserSellItemListView(generics.ListAPIView):
 class UserBuyItemListView(generics.ListAPIView):
     serializer_class = ItemSerializer
     pagination_class = ItemListPagination
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
