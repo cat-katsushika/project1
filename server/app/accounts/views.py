@@ -1,9 +1,6 @@
-import requests
 from django.contrib.auth import get_user_model
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.middleware.csrf import get_token
-from django.shortcuts import redirect
-from django.urls import reverse
 from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -117,15 +114,3 @@ def get_csrf_token(request):
     # CSRFトークンをHTTPOnlyのクッキーにセット
     response.set_cookie("csrftoken", csrf_token, httponly=True)
     return response
-
-
-def user_activate_view(request, uid, token):
-    post_url = request.build_absolute_uri("/api/auth/users/activation/")
-    data = {
-        "uid": uid,
-        "token": token,
-    }
-    response = requests.post(post_url, json=data)
-    if response.status_code == 204:
-        return redirect(reverse("login"))
-    raise Http404("The requested resource was not found.")
