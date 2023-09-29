@@ -117,7 +117,7 @@ def get_csrf_token(request):
     return response
 
 
-def user_activation_view(request, uid, token):
+def user_activate_view(request, uid, token):
     post_url = request.build_absolute_uri("/api/auth/users/activation/")
     data = {
         "uid": uid,
