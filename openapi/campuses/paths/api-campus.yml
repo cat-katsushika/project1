@@ -2,6 +2,14 @@ get:
   operationId: campus_list
   summary: キャンパス一覧取得API
   description: キャンパスの一覧を取得するためのAPIです。
+  parameters:
+    - name: university_id
+      in: query
+      description: キャンパスを取得したい大学のidを指定
+      required: false
+      schema:
+        type: string
+        format: uuid
   tags:
     - campus
   security:
