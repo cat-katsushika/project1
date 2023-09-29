@@ -1,7 +1,9 @@
 import requests
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.middleware.csrf import get_token
+from django.shortcuts import redirect
+from django.urls import reverse
 from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -125,5 +127,5 @@ def user_activate_view(request, uid, token):
     }
     response = requests.post(post_url, json=data)
     if response.status_code == 204:
-        return HttpResponse("アカウント有効化成功")
-    return HttpResponse("アカウント有効化失敗")
+        return redirect(reverse("login"))
+    raise Http404("The requested resource was not found.")
