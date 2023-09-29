@@ -7,7 +7,7 @@ from .views import (
     JWTokenRefreshView,
     LogoutView,
     UserListAPIView,
-    user_activation_view,
+    user_activate_view,
 )
 
 urlpatterns = [
@@ -15,5 +15,5 @@ urlpatterns = [
     path("auth/jwt/create/", JWTokenObtainView.as_view()),
     path("auth/jwt/refresh/", JWTokenRefreshView.as_view()),
     path("auth/logout/", LogoutView.as_view()),
-    path("auth/user/activate/<str:uid>/<str:token>/", user_activation_view),
+    path("user/activate/<str:uid>/<str:token>/", user_activate_view),
 ]
