@@ -5,7 +5,9 @@ get:
   parameters:
     - name: item_id
       in: query
-      description: メッセージを取得したい商品のidを指定
+      description: |
+        メッセージを取得したい商品のidを指定できる。
+        クエリパラメータとしてitem_idを指定するとその商品のメッセージを一覧として取得できる。
       required: false
       schema:
         type: string
