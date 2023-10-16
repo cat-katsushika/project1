@@ -37,7 +37,7 @@ class CommentCreateTest(TestCase):
         self.user = User.objects.create_user(email="test@example.com", password="testpass")
         self.item = Item.objects.get(pk="6fd2f1142af84d4586586d64324be72d")
         self.client.force_authenticate(user=self.user)
-        self.comment_data = {"comment": "テストコメント", "item_id": self.item.id}
+        self.comment_data = {"message": "テストコメント", "item_id": self.item.id}
         self.url = reverse("comment-create")
 
     def test_create_comment(self):
@@ -47,6 +47,6 @@ class CommentCreateTest(TestCase):
         """
         response = self.client.post(self.url, self.comment_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data["comment"], self.comment_data["comment"])
+        self.assertEqual(response.data["message"], self.comment_data["message"])
         self.assertEqual(response.data["user"], self.user.id)
         self.assertEqual(response.data["item_id"], self.item.id)
