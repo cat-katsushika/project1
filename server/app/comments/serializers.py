@@ -4,6 +4,7 @@ from .models import Comment
 
 class CommentSerializer(serializers.ModelSerializer):
     user_email = serializers.SerializerMethodField()
+    message = serializers.CharField(source="comment")
 
     class Meta:
         model = Comment
@@ -12,7 +13,7 @@ class CommentSerializer(serializers.ModelSerializer):
             "item_id",
             "user",
             "user_email",
-            "comment",
+            "message",
             "created_at",
         )
         read_only_fields = [
@@ -23,3 +24,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def get_user_email(self, obj):
         return obj.user.email
+
+    def get_message(self, obj):
+        return obj.comment
