@@ -1,0 +1,8 @@
+type: object
+properties:
+  order:
+    type: integer
+    example: 1
+  photo_path:
+    type: string
+    example: https://sample.image.jpg
