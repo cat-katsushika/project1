@@ -1,0 +1,67 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 876ab8c6-423c-4b32-aebe-f7f05d091325
+  seller:
+    type: string
+    example: 東京理科大学葛飾キャンパス
+  receivable_campus:
+    type: string
+    example: 64ed9201-1a6f-4638-959a-c0335395ba5c
+  images:
+    type: array
+    items:
+      $ref: "./image.yml"
+  is_liked_by_current_user:
+    type: boolean
+    description: Indicates whether the item is liked by the current user.
+    example: false
+  listing_status:
+    type: string
+    description: The listing status of the item.
+    enum:
+      - unpurchased
+      # 他の状態がある場合、ここに追加
+    example: unpurchased
+  price:
+    type: integer
+    description: The price of the item.
+    example: 100
+  name:
+    type: string
+    description: The name of the item.
+    example: 名前
+  description:
+    type: string
+    description: The description of the item.
+    example: 説明
+  condition:
+    type: string
+    description: The condition of the item.
+    enum:
+      - fine
+      # 他の状態がある場合、ここに追加
+    example: fine
+  writing_state:
+    type: string
+    description: The writing state of the item.
+    enum:
+      - none
+      # 他の状態がある場合、ここに追加
+    example: none
+  created_at:
+    type: string
+    format: date-time
+    description: The date and time when the item was created.
+    example: "2023-10-20T19:29:15.346863+09:00"
+  updated_at:
+    type: string
+    format: date-time
+    description: The date and time when the item was last updated.
+    example: "2023-10-20T19:29:15.346886+09:00"
+  buyer:
+    type: string
+    nullable: true
+    description: The buyer of the item (if any).
+    example: null

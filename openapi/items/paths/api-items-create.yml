@@ -1,0 +1,28 @@
+post:
+  operationId: item_create
+  summary: item作成API
+  description: item作成API
+  tags:
+    - items
+  requestBody:
+    description: |
+      item作成APIのリクエストボディです。
+      画像は10枚までアップロード可能です。
+      multipart/form-data:でリクエストを送信してください。
+      画像はimage_1からimage_10までのキーで送信してください。
+      image_1, image_2と処理し、途切れたらそこで終了します。
+      よって10枚すべてのkeyを送信しなくても構いません。
+    content:
+      multipart/form-data:
+        schema:
+          $ref: "../schemas/create-item.yml"
+    required: true
+  security:
+    - AccessTokenAuth: []
+  responses:
+    "201":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/item.yml"
+      description: ""

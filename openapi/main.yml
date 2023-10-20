@@ -587,6 +587,8 @@ paths:
     $ref: "./comments/paths/api-comment.yml"
   /api/comment/create/:
     $ref: "./comments/paths/api-comment-create.yml"
+  /api/items/create:
+    $ref: "./items/paths/api-items-create.yml"
   /api/items/:
     get:
       operationId: items_list
@@ -695,34 +697,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/PaginatedItemList"
           description: ""
-    post:
-      operationId: items_create
-      summary: 商品登録API
-      description: 商品登録API
-      tags:
-        - items
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Item"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/Item"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/Item"
-        required: true
-      security:
-        - tokenAuth: []
-        - jwtAuth: []
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Item"
-          description: ""
+    # post:
+    #   operationId: items_create
+    #   summary: 商品登録API
+    #   description: 商品登録API
+    #   tags:
+    #     - items
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: "#/components/schemas/Item"
+    #       application/x-www-form-urlencoded:
+    #         schema:
+    #           $ref: "#/components/schemas/Item"
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: "#/components/schemas/Item"
+    #     required: true
+    #   security:
+    #     - tokenAuth: []
+    #     - jwtAuth: []
+    #   responses:
+    #     "201":
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/Item"
+    #       description: ""
   /api/items/{id}/:
     get:
       operationId: items_retrieve
@@ -747,45 +749,48 @@ paths:
               schema:
                 $ref: "#/components/schemas/Item"
           description: ""
-    put:
-      operationId: items_update
-      summary: 商品情報更新API
-      description: 商品情報更新API
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-            format: uuid
-          required: true
-      tags:
-        - items
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Item"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/Item"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/Item"
-        required: true
-      security:
-        - tokenAuth: []
-        - jwtAuth: []
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Item"
-          description: ""
+    # put:
+    #   operationId: items_update
+    #   summary: 商品情報更新API
+    #   description: 商品情報更新API
+    #   parameters:
+    #     - in: path
+    #       name: id
+    #       schema:
+    #         type: string
+    #         format: uuid
+    #       required: true
+    #   tags:
+    #     - items
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: "#/components/schemas/Item"
+    #       application/x-www-form-urlencoded:
+    #         schema:
+    #           $ref: "#/components/schemas/Item"
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: "#/components/schemas/Item"
+    #     required: true
+    #   security:
+    #     - tokenAuth: []
+    #     - jwtAuth: []
+    #   responses:
+    #     "200":
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: "#/components/schemas/Item"
+    #       description: ""
     patch:
       operationId: items_partial_update
       summary: 商品情報一部更新API
-      description: 商品情報一部更新API
+      description: |
+        商品情報一部更新API<br>
+        multipart/form-data:でリクエストを送信してください。<br>
+        送り方はcreateと一緒です。
       parameters:
         - in: path
           name: id
@@ -793,28 +798,27 @@ paths:
             type: string
             format: uuid
           required: true
+          description: 商品ID
+        - in: query
+          name: partial
+          schema:
+            type: string
+          description: |
+            True or False, デフォルトはFalse <br>
+            Trueの場合、商品情報の一部のみ更新します。<br>
+            Falseの場合、商品情報を全て更新します。よってすべての情報が必要です。
       tags:
         - items
       requestBody:
         content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PatchedItem"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/PatchedItem"
           multipart/form-data:
             schema:
-              $ref: "#/components/schemas/PatchedItem"
+              type: object
       security:
         - tokenAuth: []
         - jwtAuth: []
       responses:
         "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Item"
           description: 成功
     delete:
       operationId: items_destroy

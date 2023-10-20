@@ -1,0 +1,27 @@
+type: object
+properties:
+  image_1:
+    type: file
+    format: binary
+    description: |
+      image_1, image_2, ... , image_10のうち、必要な数だけ送信してください。
+      image_1は必須です。
+  price:
+    type: integer
+  name:
+    type: string
+  description:
+    type: string
+  condition:
+    type: string
+    description: |
+      選択肢は, brandNew, fine, used, damaged
+      意味は順番に "未使用", "目立った傷や汚れなし", "使用感あり","破損あり"
+  writing_state:
+    type: string
+    description: |
+      選択肢は, none, little, lot
+      意味は順番に "全くない", "少しある", "かなりある"
+  receivable_campus:
+    type: string
+    description: 受け渡し可能なキャンパスのid
