@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
 from .models import Item, Image
-from PIL import Image as PILImage
-import io
+
+# from PIL import Image as PILImage
+# import io
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -81,20 +82,76 @@ class ItemSerializer(serializers.ModelSerializer):
             if image.id not in image_data_ids:
                 image.delete()
 
-    def process_images(self, item):
-        for image in item.images.all():
-            self.convert_to_jpeg(image)
+    # def process_images(self, item):
+    #     for image in item.images.all():
+    #         self.convert_to_jpeg(image)
 
-    def convert_to_jpeg(self, image):
-        if image.format != "JPEG":
-            try:
-                # 画像を開いてRGB形式に変換
-                img = PILImage.open(image.photo_path)
-                img = img.convert("RGB")
-                # 画像をJPEG形式で保存するためのバッファを作成
-                buffer = io.BytesIO()
-                img.save(buffer, format="JPEG")
-                # バッファの内容をファイルオブジェクトに書き込む
-                image.photo_path.save(image.photo_path.name, content=ContentFile(buffer.getvalue()), save=False)
-            except Exception:
-                raise serializers.ValidationError("画像の変換に失敗しました。")
+    # def convert_to_jpeg(self, image):
+    #     if image.format != "JPEG":
+    #         try:
+    #             # 画像を開いてRGB形式に変換
+    #             img = PILImage.open(image.photo_path)
+    #             img = img.convert("RGB")
+    #             # 画像をJPEG形式で保存するためのバッファを作成
+    #             buffer = io.BytesIO()
+    #             img.save(buffer, format="JPEG")
+    #             # バッファの内容をファイルオブジェクトに書き込む
+    #             image.photo_path.save(image.photo_path.name, content=ContentFile(buffer.getvalue()), save=False)
+    #         except Exception:
+    #             raise serializers.ValidationError("画像の変換に失敗しました。")
+
+
+class ItemImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ("photo_path", "order")
+
+
+class ItemCreateSerializer(serializers.ModelSerializer):
+    images = ItemImageSerializer(many=True, write_only=True)  # write_only を追加
+
+    class Meta:
+        model = Item
+        fields = (
+            "images",
+            "id",
+            "seller",
+            "buyer",
+            "listing_status",
+            "price",
+            "name",
+            "description",
+            "condition",
+            "writing_state",
+            "receivable_campus",
+        )
+
+    def create(self, validated_data):
+        images_data = validated_data.pop("images")
+        item = Item.objects.create(**validated_data)
+        for image_data in images_data:
+            Image.objects.create(parent_item=item, **image_data)
+        return item
+
+    def update(self, instance, validated_data):
+        print("validated_data: ", validated_data)
+        images_data = validated_data.pop("images")
+        item = super().update(instance, validated_data)
+        self.update_images(item, images_data)
+        return instance
+
+    def update_images(self, item, images_data):
+        # 画像の更新
+        # partial=Trueのとき
+        if self.partial:
+            for image in images_data:
+                # 元の画像画像を削除 (存在するなら)
+                ex_image = item.images.filter(order=image["order"])
+                ex_image.delete()
+                Image.objects.update_or_create(parent_item=item, **image)
+        # partial=Falseのとき
+        else:
+            existing_images = item.images.all()
+            existing_images.delete()
+            for image in images_data:
+                Image.objects.update_or_create(parent_item=item, **image)

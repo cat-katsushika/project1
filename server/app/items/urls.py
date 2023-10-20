@@ -6,7 +6,8 @@ from . import views
 app_name = "items"
 
 urlpatterns = [
-    path("", views.ItemListCreateView.as_view()),
+    path("", views.ItemListView.as_view()),
+    path("create/", views.ItemCreateAPIView.as_view()),
     path("<uuid:pk>/", views.ItemRetrieveUpdateDestroyView.as_view()),
     path("<uuid:pk>/purchase/", views.ItemPurchaseView.as_view()),
     path("<uuid:pk>/cancel/", views.ItemCancelView.as_view()),
