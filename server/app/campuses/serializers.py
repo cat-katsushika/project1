@@ -1,6 +1,7 @@
 # serializers.py
 from rest_framework import serializers
-from .models import University, Campus
+
+from .models import Campus, University
 
 
 class UniversitySerializer(serializers.ModelSerializer):

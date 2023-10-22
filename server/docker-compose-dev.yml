@@ -21,7 +21,9 @@ services:
       - webnet
 
   postgres:
-    image: postgres
+    image: postgres:14
+    volumes:
+      - ./db:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}

@@ -1,8 +1,9 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import University, Campus
-from .serializers import UniversitySerializer, CampusSerializer
+
+from .models import Campus, University
+from .serializers import CampusSerializer, UniversitySerializer
 
 
 class UniversityDetailView(generics.RetrieveAPIView):
