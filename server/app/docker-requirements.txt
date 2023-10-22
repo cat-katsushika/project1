@@ -1,0 +1,13 @@
+Django==4.2.3
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.0
+django-cors-headers
+django-filter==23.2
+djoser==2.2.0
+Pillow==10.1.0
+coverage
+black
+flake8
+isort
+PyYAML
+psycopg2==2.9.6

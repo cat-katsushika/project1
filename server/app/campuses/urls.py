@@ -1,10 +1,6 @@
 from django.urls import path
-from .views import (
-    UniversityDetailView,
-    UniversityListView,
-    CampusDetailView,
-    CampusListView,
-)
+
+from .views import CampusDetailView, CampusListView, UniversityDetailView, UniversityListView
 
 urlpatterns = [
     path("university/<uuid:pk>/", UniversityDetailView.as_view(), name="university-detail"),

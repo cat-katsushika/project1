@@ -9,8 +9,8 @@
 			"email": "example@ed.tus.ac.jp",
 			"is_staff": false,
 			"is_active": true,
-			"created_at": "2023-08-26 15:05:02.952944",
-			"updated_at": "2023-08-26 15:05:02.954819",
+			"created_at": "2023-08-26 15:05:02.952944+00:00",
+			"updated_at": "2023-08-26 15:05:02.954819+00:00",
 			"groups": [],
 			"user_permissions": []
 		}
@@ -25,8 +25,8 @@
 			"email": "admin@ed.tus.ac.jp",
 			"is_staff": true,
 			"is_active": true,
-			"created_at": "2023-08-26 15:08:32.887509",
-			"updated_at": "2023-08-26 15:08:32.888582",
+			"created_at": "2023-08-26 15:08:32.887509+00:00",
+			"updated_at": "2023-08-26 15:08:32.888582+00:00",
 			"groups": [],
 			"user_permissions": []
 		}
