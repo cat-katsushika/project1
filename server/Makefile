@@ -1,3 +1,7 @@
+.PHONY: dev-env
+dev-env:
+	cp .env.dev .env
+
 .PHONY: dev-build
 dev-build:
 	docker compose -f docker-compose-dev.yml build
@@ -54,3 +58,13 @@ dev-full:
 	@make rm-db
 	@make dev-build--no-cache
 	@make dev-up-d
+
+
+.PHONY: fixtures
+fixtures:
+	docker compose -f docker-compose-dev.yml exec django python manage.py loaddata --format yaml fixtures.yaml
+
+.PHONY: fixtures--dump
+fixtures--dump:
+	@make fixtures
+	docker compose -f docker-compose-dev.yml exec django python manage.py dumpdata --format yaml --output=fixtures.yaml
