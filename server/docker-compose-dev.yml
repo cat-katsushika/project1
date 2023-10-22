@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  django:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.django
+    container_name: django
+    command: ['bash', '-c', 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000']
+    environment:
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    volumes:
+      - ./app:/app
+    depends_on:
+      - postgres
+    networks:
+      - webnet
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge
