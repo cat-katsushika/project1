@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "campuses",
     "comments",
     "items",
+    "notifications",
     "terms_and_conditions",
     "transaction_messages",
 ]

@@ -49,22 +49,15 @@ lint:
 	@make isort
 	@make flake8
 
-.PHONY: rm-db
-rm-db:
-	sudo rm -rf db/
 
-.PHONY: dev-full
-dev-full:
-	@make rm-db
-	@make dev-build--no-cache
-	@make dev-up-d
-
-
+# テストデータの追加
 .PHONY: fixtures
 fixtures:
-	docker compose -f docker-compose-dev.yml exec django python manage.py loaddata --format yaml fixtures.yaml
+	docker compose -f docker-compose-dev.yml exec django python manage.py loaddata --format yaml \
+	accounts/fixtures/users.yaml \
+	notifications/fixtures/notifications.yaml 
 
-.PHONY: fixtures--dump
-fixtures--dump:
-	@make fixtures
-	docker compose -f docker-compose-dev.yml exec django python manage.py dumpdata --format yaml --output=fixtures.yaml
+# djangoのコンテナのターミナルに入るコマンド
+.PHONY: exec
+exec:
+	docker compose -f docker-compose-dev.yml exec django bash

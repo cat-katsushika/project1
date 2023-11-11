@@ -1,0 +1,15 @@
+get:
+  tags:
+    - notification
+  operationId: notification_list
+  summary: 通知一覧取得API
+  description: ログインしているユーザーの通知の一覧が取得できるAPIです。
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/notification.yml"
+      description: "通知一覧取得成功"
