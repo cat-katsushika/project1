@@ -1,8 +1,8 @@
-from django.db import models
 from uuid import uuid4
 
-from django.db import models
 from django.conf import settings
+from django.db import models
+
 
 class Notification(models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
