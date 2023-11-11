@@ -20,4 +20,4 @@ class NotificationView(APIView):
         """
         notifications = Notification.objects.filter(user=request.user)
         serializer = NotificationSerializer(notifications, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
