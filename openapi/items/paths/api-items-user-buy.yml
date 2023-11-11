@@ -1,0 +1,25 @@
+get:
+  operationId: items_buy_list
+  summary: 購入商品一覧取得API
+  description: ユーザーが購入した商品の一覧を取得できるAPIです。
+  parameters:
+    - in: query
+      name: page
+      description: |-
+        ページ番号 <br>
+        ページ番号を指定することで、指定したページの商品一覧を取得することができます。
+      required: false
+      schema:
+        type: integer
+  tags:
+    - items
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/paginated-item.yml"
+      description: ""

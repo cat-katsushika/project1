@@ -1,0 +1,24 @@
+patch:
+  operationId: items_cancel_partial_update
+  summary: 出品キャンセルAPI
+  parameters:
+    - in: path
+      name: id
+      description: |-
+        URLには商品のIDが指定されている必要があります。
+      schema:
+        type: string
+        format: uuid
+      required: true
+  tags:
+    - items
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/item.yml"
+      description: ""

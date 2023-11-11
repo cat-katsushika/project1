@@ -2,13 +2,13 @@ type: object
 properties:
   id:
     type: string
-    example: 876ab8c6-423c-4b32-aebe-f7f05d091325
+    example: c1c61f36-6032-4d39-a649-6ad16ee4f00c
   seller:
     type: string
-    example: 東京理科大学葛飾キャンパス
+    example: test1@example.com
   receivable_campus:
     type: string
-    example: 64ed9201-1a6f-4638-959a-c0335395ba5c
+    example: 東京理科大学葛飾キャンパス
   images:
     type: array
     items:
@@ -22,44 +22,49 @@ properties:
     description: The listing status of the item.
     enum:
       - unpurchased
-      # 他の状態がある場合、ここに追加
+      - purchased
+      - completed
+      - canceled
     example: unpurchased
   price:
     type: integer
     description: The price of the item.
-    example: 100
+    example: 200
   name:
     type: string
     description: The name of the item.
-    example: 名前
+    example: テスト商品1
   description:
     type: string
     description: The description of the item.
-    example: 説明
+    example: テスト商品1の説明です
   condition:
     type: string
     description: The condition of the item.
     enum:
+      - brandNew
       - fine
-      # 他の状態がある場合、ここに追加
-    example: fine
+      - used
+      - damaged
+    example: brandNew
   writing_state:
     type: string
     description: The writing state of the item.
     enum:
       - none
-      # 他の状態がある場合、ここに追加
+      - little
+      - lot
     example: none
   created_at:
     type: string
     format: date-time
     description: The date and time when the item was created.
-    example: "2023-10-20T19:29:15.346863+09:00"
+    example: "2023-11-11T20:22:49.521557+09:00"
   updated_at:
     type: string
     format: date-time
     description: The date and time when the item was last updated.
-    example: "2023-10-20T19:29:15.346886+09:00"
+    example: "2023-11-11T20:22:49.521565+09:00"
   buyer:
     type: string
     nullable: true

@@ -55,6 +55,9 @@ lint:
 fixtures:
 	docker compose -f docker-compose-dev.yml exec django python manage.py loaddata --format yaml \
 	accounts/fixtures/users.yaml \
+	campuses/fixtures/campuses.yaml \
+	campuses/fixtures/universities.yaml \
+	items/fixtures/items.yaml \
 	notifications/fixtures/notifications.yaml 
 
 # djangoのコンテナのターミナルに入るコマンド
