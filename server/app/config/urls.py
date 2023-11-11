@@ -8,6 +8,7 @@ urlpatterns = [
     path("api/", include("campuses.urls")),
     path("api/comment/", include("comments.urls")),
     path("api/items/", include("items.urls")),
+    path("api/notification/", include("notifications.urls")),
     path("api/messages/", include("transaction_messages.urls")),
     path("api/auth/", include("djoser.urls")),
     path("api/", include("accounts.urls")),
