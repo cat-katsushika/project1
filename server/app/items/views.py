@@ -19,12 +19,12 @@ class ItemListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = self.queryset
+        listing_status_list = [Item.ListingStatus.UNPURCHASED, Item.ListingStatus.PURCHASED]
+        queryset = queryset.filter(listing_status__in=listing_status_list)
+        # 商品名で検索
         name_query = self.request.query_params.get("name", None)
-        listing_status_query = self.request.query_params.get("listing_status", None)
         if name_query:
             queryset = queryset.filter(name__icontains=name_query)
-        if listing_status_query:
-            queryset = queryset.filter(listing_status=listing_status_query)
         return queryset
 
 
@@ -146,12 +146,11 @@ class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
         serializer = ItemCreateSerializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
-        print("aaa")
         self.perform_update(serializer)
 
         updated_item = self.get_object()
         response_serializer = ItemSerializer(updated_item, context={"request": request})
-        return Response(response_serializer.data)
+        return Response(response_serializer.data, status=status.HTTP_200_OK)
 
 
 class ItemPurchaseView(generics.UpdateAPIView):
@@ -169,7 +168,7 @@ class ItemPurchaseView(generics.UpdateAPIView):
         item.save()
 
         serializer = self.get_serializer(item)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ItemCancelView(generics.UpdateAPIView):
@@ -180,7 +179,8 @@ class ItemCancelView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         item = self.get_object()
 
-        item.buyer = None
+        if item.buyer is not None:
+            return Response({"error": "購入された商品はキャンセルできません。"}, status=status.HTTP_400_BAD_REQUEST)
         item.listing_status = Item.ListingStatus.CANCELED
         item.save()
 
@@ -228,8 +228,10 @@ class UserLikeItemListView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        like_items = Item.objects.filter(liked_by__user=user).prefetch_related("liked_by")
-        return like_items
+        queryset = Item.objects.filter(liked_by__user=user).prefetch_related("liked_by")
+        listing_status_list = [Item.ListingStatus.UNPURCHASED, Item.ListingStatus.PURCHASED]
+        queryset = queryset.filter(listing_status__in=listing_status_list)
+        return queryset
 
 
 class UserSellItemListView(generics.ListAPIView):

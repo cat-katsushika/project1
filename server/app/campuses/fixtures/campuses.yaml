@@ -1,0 +1,15 @@
+- model: campuses.campus
+  pk: 1365f535-e863-4345-8bed-5e10c5466c3f
+  fields:
+    university: ee4cfb26-6d99-4f45-87d2-76da541f0081
+    campus: 東京理科大学野田キャンパス
+- model: campuses.campus
+  pk: 950c7d9c-5ffe-4af1-8590-e231191e190d
+  fields:
+    university: ee4cfb26-6d99-4f45-87d2-76da541f0081
+    campus: 東京理科大学葛飾キャンパス
+- model: campuses.campus
+  pk: b77ce0c6-60a1-4503-9e61-f0879b1daa4d
+  fields:
+    university: ee4cfb26-6d99-4f45-87d2-76da541f0081
+    campus: 東京理科大学神楽坂キャンパス

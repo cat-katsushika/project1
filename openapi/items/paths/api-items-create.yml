@@ -1,16 +1,16 @@
 post:
   operationId: item_create
-  summary: item作成API
+  summary: 商品作成API
   description: item作成API
   tags:
     - items
   requestBody:
     description: |
-      item作成APIのリクエストボディです。
-      画像は10枚までアップロード可能です。
-      multipart/form-data:でリクエストを送信してください。
-      画像はimage_1からimage_10までのキーで送信してください。
-      image_1, image_2と処理し、途切れたらそこで終了します。
+      item作成APIのリクエストボディです。<br>
+      画像は10枚までアップロード可能です。<br>
+      multipart/form-data:でリクエストを送信してください。<br>
+      画像はimage_1からimage_10までのキーで送信してください。<br>
+      image_1, image_2と処理し、途切れたらそこで終了します。<br>
       よって10枚すべてのkeyを送信しなくても構いません。
     content:
       multipart/form-data:

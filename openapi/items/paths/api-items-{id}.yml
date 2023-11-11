@@ -1,0 +1,85 @@
+get:
+  operationId: items_retrieve
+  summary: 商品詳細取得API
+  description: 商品詳細取得API
+  parameters:
+    - in: path
+      name: id
+      description: |-
+        URLには商品のIDが指定されている必要があります。
+      schema:
+        type: string
+        format: uuid
+      required: true
+  tags:
+    - items
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/item.yml"
+      description: ""
+patch:
+  operationId: items_partial_update
+  summary: 商品情報一部更新API
+  description: |
+    商品情報一部更新API<br>
+    multipart/form-data:でリクエストを送信してください。<br>
+    送り方はcreateと一緒です。
+  parameters:
+    - in: path
+      name: id
+      description: |-
+        URLには商品のIDが指定されている必要があります。
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - in: query
+      name: partial
+      schema:
+        type: string
+      description: |
+        True or Falseで指定して下さい。デフォルトはFalseです。 <br>
+        Trueの場合、商品情報の一部のみを更新します。よってリクエストには変更箇所の情報のみがあれば良いです。<br>
+        Falseの場合、商品情報を全て更新します。よってリクエストにすべての情報(Itemのすべての要素)を含める必要があります。
+  tags:
+    - items
+  requestBody:
+    content:
+      multipart/form-data:
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/item.yml"
+      description: ""
+delete:
+  operationId: items_destroy
+  summary: 商品削除API
+  description: 商品の削除を行います。
+  parameters:
+    - in: path
+      name: id
+      description: |-
+        URLには商品のIDが指定されている必要があります。
+      schema:
+        type: string
+        format: uuid
+      required: true
+  tags:
+    - items
+  security:
+    - tokenAuth: []
+    - jwtAuth: []
+  responses:
+    "204":
+      description: No response body

@@ -1,0 +1,42 @@
+- model: items.item
+  pk: 19377564-a7bc-4cc1-8f7c-3aa9de1e4f78
+  fields:
+    seller: 5f1c7d7d-52ce-422f-8c4b-4e9e5d92db5d
+    buyer: null
+    listing_status: canceled
+    price: 400
+    name: テスト商品3
+    description: テスト商品3の説明です。
+    condition: brandNew
+    writing_state: none
+    receivable_campus: 1365f535-e863-4345-8bed-5e10c5466c3f
+    created_at: 2023-11-11 11:46:38.270373+00:00
+    updated_at: 2023-11-11 11:46:38.270384+00:00
+- model: items.item
+  pk: 9a5bac27-8b4a-40a1-b84a-ad36b6b85ed9
+  fields:
+    seller: 5f1c7d7d-52ce-422f-8c4b-4e9e5d92db5d
+    buyer: eadcfad7-69df-4f8a-bac3-61bc3366d4b5
+    listing_status: purchased
+    price: 300
+    name: テスト商品2
+    description: テスト商品2の説明です
+    condition: fine
+    writing_state: little
+    receivable_campus: 950c7d9c-5ffe-4af1-8590-e231191e190d
+    created_at: 2023-11-11 11:23:30.158002+00:00
+    updated_at: 2023-11-11 11:23:30.158009+00:00
+- model: items.item
+  pk: c1c61f36-6032-4d39-a649-6ad16ee4f00c
+  fields:
+    seller: 5f1c7d7d-52ce-422f-8c4b-4e9e5d92db5d
+    buyer: null
+    listing_status: unpurchased
+    price: 200
+    name: テスト商品1
+    description: テスト商品1の説明です
+    condition: brandNew
+    writing_state: none
+    receivable_campus: 950c7d9c-5ffe-4af1-8590-e231191e190d
+    created_at: 2023-11-11 11:22:49.521557+00:00
+    updated_at: 2023-11-11 11:22:49.521565+00:00
