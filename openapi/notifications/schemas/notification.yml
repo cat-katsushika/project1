@@ -1,0 +1,23 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 7b6f8e41-23bf-49c6-8fbb-459118c4eb0e
+  title:
+    type: string
+    example: テスト通知1
+  message:
+    type: string
+    example: こちらはテスト通知1の内容です。\r\n既読です。
+  is_read:
+    type: boolean
+    example: true
+  created_at:
+    type: string
+    example: "2023-11-11T16:24:11.728221+09:00"
+  updated_at:_at:
+    type: string
+    example: "2023-11-11T16:24:16.577313+09:00"
+  user:
+    type: string
+    example: 5f1c7d7d-52ce-422f-8c4b-4e9e5d92db5d
