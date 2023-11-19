@@ -2,6 +2,8 @@ from rest_framework import generics, permissions, status, views
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from pyfcm import FCMNotification
+from django.conf import settings
 
 from .models import Item, Like
 from .serializers import ItemCreateSerializer, ItemSerializer
@@ -166,6 +168,17 @@ class ItemPurchaseView(generics.UpdateAPIView):
         item.buyer = request.user
         item.listing_status = Item.ListingStatus.PURCHASED
         item.save()
+
+        # FCM通知
+        seller = item.seller
+        device = seller.device_set.first()
+        if device:
+            registration_id = device.registration_id
+            push_service = FCMNotification(api_key=settings.FCM_API_KEY)
+            message_title = "商品が購入されました"
+            message_body = f"{item.name} が購入されました。"
+            result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
+        
 
         serializer = self.get_serializer(item)
         return Response(serializer.data, status=status.HTTP_200_OK)

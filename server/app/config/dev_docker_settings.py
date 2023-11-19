@@ -215,3 +215,7 @@ DJOSER = {
         "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
     },
 }
+
+PYFCM_SETTINGS = {
+    "FCM_SERVER_KEY": "your_server_key_here"
+}
