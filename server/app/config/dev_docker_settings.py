@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+from firebase_admin import initialize_app
 
 import environ
 
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "djoser",
     "corsheaders",
+    "fcm_django",
     # Original apps
     "accounts",
     "campuses",
@@ -216,6 +218,5 @@ DJOSER = {
     },
 }
 
-PYFCM_SETTINGS = {
-    "FCM_SERVER_KEY": "your_server_key_here"
-}
+GOOGLE_APPLICATION_CREDENTIALS = "the_path_to_your_json_file"
+FIREBASE_APP = initialize_app()

@@ -1,0 +1,40 @@
+post:
+  operationId: device_create
+  summary: デバイス追加API
+  description: |-
+    デバイスを追加するAPIです．<br>
+    このAPIはログインしている状態でのみ利用でき，ログインユーザーのデバイスとして登録されます．<br>
+
+    ## Requestについて <br>
+    リクエストにおいては2つの値を送ってください．<br>
+    registration_id: デバイスを識別するためのID, FCMにおけるデバイスID<br>
+    type: デバイスの種類, (android, web, ios)のどれか<br>
+    同じユーザーから別のデバイスIDが送られた場合，
+    一人のユーザーに複数の端末をが登録されます．<br>
+
+    ## Responseについて <br>
+    サードパーティー製のライブラリを使用しているため，現状必要ないものまで返ってきます．<br>
+    id: バックエンドで管理するためのID<br>
+    name: 必要ないもの (空欄)<br>
+    registration_id: デバイスを識別するためのID, FCMにおけるデバイスID<br>
+    device_id: 必要ないもの (空欄)<br>
+    active: trueです．管理画面でfalseにできますが，現状送信処理で参照していないため無意味<br>
+    date_created: デバイスの登録日時<br>
+    type: デバイスの種類, (android, web, ios)<br>
+  tags:
+    - device
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/create-device.yml"
+    required: true
+  security:
+    - AccessTokenAuth: []
+  responses:
+    "201":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/device.yml"
+      description: ""

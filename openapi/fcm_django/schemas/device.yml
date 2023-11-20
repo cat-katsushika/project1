@@ -1,0 +1,23 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 1
+  name:
+    type: string
+    example: ""
+  registration_id:
+    type: string
+    example: 671a1f67-3030-4151-a19a-43c630f8343c
+  device_id:
+    type: string
+    example: ""
+  active:
+    type: string
+    example: "true"
+  date_created:
+    type: string
+    example: "2023-09-13T21:43:49+09:00"
+  type:
+    type: string
+    example: ios

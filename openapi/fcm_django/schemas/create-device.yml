@@ -1,0 +1,8 @@
+type: object
+properties:
+  registration_id:
+    type: string
+    example: 671a1f67-3030-4151-a19a-43c630f8343c
+  type:
+    type: string
+    example: ios

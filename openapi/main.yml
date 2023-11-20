@@ -609,6 +609,8 @@ paths:
     $ref: "./items/paths/api-items-user-buy.yml"
   /api/notification/:
     $ref: "./notifications/paths/api-notification.yml"
+  /api/devices/:
+    $ref: "./fcm_django/paths/api-devices.yml"
   /api/messages/:
     $ref: "./transaction_messages/paths/api-messages.yml"
   /api/messages/create/:
