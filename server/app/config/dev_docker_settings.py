@@ -218,5 +218,5 @@ DJOSER = {
     },
 }
 
-GOOGLE_APPLICATION_CREDENTIALS = "the_path_to_your_json_file"
+
 FIREBASE_APP = initialize_app()

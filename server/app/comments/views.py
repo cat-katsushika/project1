@@ -49,15 +49,16 @@ class CommentCreateView(generics.CreateAPIView):
                 message=message,
             )
             # FCM通知対象のデバイスにトピック設定
-            FCMDevice.objects.filter(user=user).handle_topic_subscription(topic_name="コメント", is_subscribed=True)
+            FCMDevice.objects.filter(user=user).handle_topic_subscription(True, topic="comment")
 
         # FCM通知
         message = FCMMessage(
             notification=FCMNotification(title=title, body=message),
         )
-        FCMDevice.send_topic_message(message, topic_name="コメント")
+        response = FCMDevice.send_topic_message(message, "comment")
+        # print(response)
         # トピック解除
-        FCMDevice.objects.all().handle_topic_subscription(topic_name="コメント", is_subscribed=False)
+        FCMDevice.objects.all().handle_topic_subscription(False, topic="comment")
 
 
 class CommentListAPIView(APIView):
