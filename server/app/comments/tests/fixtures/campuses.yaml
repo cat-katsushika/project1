@@ -1,0 +1,5 @@
+- model: campuses.campus
+  pk: 950c7d9c-5ffe-4af1-8590-e231191e190d
+  fields:
+    university: ee4cfb26-6d99-4f45-87d2-76da541f0081
+    campus: 東京理科大学葛飾キャンパス

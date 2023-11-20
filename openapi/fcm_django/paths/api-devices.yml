@@ -18,7 +18,7 @@ post:
     name: 必要ないもの (空欄)<br>
     registration_id: デバイスを識別するためのID, FCMにおけるデバイスID<br>
     device_id: 必要ないもの (空欄)<br>
-    active: trueです．管理画面でfalseにできますが，現状送信処理で参照していないため無意味<br>
+    active: 必要ないもの(true).管理画面でfalseにできますが，現状送信処理で参照していないため無意味<br>
     date_created: デバイスの登録日時<br>
     type: デバイスの種類, (android, web, ios)<br>
   tags:
@@ -32,6 +32,15 @@ post:
   security:
     - AccessTokenAuth: []
   responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/device.yml"
+      description: |-
+        一度登録されたデバイスIDが送られた場合は200を返します．<br>
+        一度登録されたデバイスIDが他人から送られた場合は，そのデバイスは
+        新しい方の人に紐付きます．
     "201":
       content:
         application/json:

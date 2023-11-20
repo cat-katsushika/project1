@@ -1,0 +1,10 @@
+- model: fcm_django.fcmdevice
+  pk: 1
+  fields:
+    name: ""
+    active: true
+    user: eadcfad7-69df-4f8a-bac3-61bc3366d4b5
+    date_created: 2023-11-20 01:17:21.255402+00:00
+    device_id: ""
+    registration_id: test_device_id_1
+    type: ios

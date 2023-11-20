@@ -1,10 +1,12 @@
+from fcm_django.models import FCMDevice
+from firebase_admin.messaging import Message as FCMMessage
+from firebase_admin.messaging import Notification as FCMNotification
 from rest_framework import generics, permissions, status, views
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from firebase_admin.messaging import Message, Notification
-from fcm_django.models import FCMDevice
-from django.conf import settings
+
+from notifications.models import Notification
 
 from .models import Item, Like
 from .serializers import ItemCreateSerializer, ItemSerializer
@@ -170,16 +172,22 @@ class ItemPurchaseView(generics.UpdateAPIView):
         item.listing_status = Item.ListingStatus.PURCHASED
         item.save()
 
-        
-        # FMC通知
-        message = Message(
-            notification=Notification(title="商品が購入されました", body=f"{item.name} が購入されました。"),
+        # 通知関連
+        user = item.seller
+        title = "商品が購入されました"
+        message = f"{item.name} が購入されました。"
+        # 通知保存
+        Notification.objects.create(
+            user=user,
+            title=title,
+            message=message,
         )
-        devices = FCMDevice.objects.filter(user=item.seller)
+        # FMC通知
+        message = FCMMessage(
+            notification=FCMNotification(title=title, body=message),
+        )
+        devices = FCMDevice.objects.filter(user=user)
         devices.send_message(message)
-
-        
-        
 
         serializer = self.get_serializer(item)
         return Response(serializer.data, status=status.HTTP_200_OK)

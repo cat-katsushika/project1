@@ -1,9 +1,17 @@
+from django.contrib.auth import get_user_model
+from fcm_django.models import FCMDevice
+from firebase_admin.messaging import Message as FCMMessage
+from firebase_admin.messaging import Notification as FCMNotification
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from notifications.models import Notification
+
 from .models import Comment
 from .serializers import CommentSerializer
+
+User = get_user_model()
 
 
 class CommentCreateView(generics.CreateAPIView):
@@ -18,7 +26,38 @@ class CommentCreateView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
+        self.create_notification(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def create_notification(self, serializer):
+        # 販売者とコメントしたユーザーに通知を送る(自分は除外する)
+        users = []
+        users.append(serializer.instance.item_id.seller)
+        comment_user = User.objects.filter(comment__item_id=serializer.instance.item_id).distinct()
+        users.extend(comment_user)
+        users = [user for user in users if user != serializer.instance.user]
+
+        title = "コメントが投稿されました"
+        message = f"{serializer.instance.item_id.name} にコメントが投稿されました。"
+
+        # 通知保存
+
+        for user in users:
+            Notification.objects.create(
+                user=user,
+                title=title,
+                message=message,
+            )
+            # FCM通知対象のデバイスにトピック設定
+            FCMDevice.objects.filter(user=user).handle_topic_subscription(topic_name="コメント", is_subscribed=True)
+
+        # FCM通知
+        message = FCMMessage(
+            notification=FCMNotification(title=title, body=message),
+        )
+        FCMDevice.send_topic_message(message, topic_name="コメント")
+        # トピック解除
+        FCMDevice.objects.all().handle_topic_subscription(topic_name="コメント", is_subscribed=False)
 
 
 class CommentListAPIView(APIView):

@@ -1,9 +1,9 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-from firebase_admin import initialize_app
 
 import environ
+from firebase_admin import initialize_app
 
 env = environ.Env()
 
