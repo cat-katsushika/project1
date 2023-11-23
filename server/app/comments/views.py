@@ -55,9 +55,7 @@ class CommentCreateView(generics.CreateAPIView):
         message = FCMMessage(
             notification=FCMNotification(title=title, body=message),
         )
-        response = FCMDevice.send_topic_message(message, "comment")
-        # print(response)
-        # トピック解除
+        FCMDevice.send_topic_message(message, "comment")
         FCMDevice.objects.all().handle_topic_subscription(False, topic="comment")
 
 
