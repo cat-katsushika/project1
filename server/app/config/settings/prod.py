@@ -3,6 +3,8 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
+from firebase_admin import initialize_app
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 env = environ.Env()
@@ -25,6 +27,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "djoser",
     "corsheaders",
+    "fcm_django",
     # Original apps
     "accounts",
     "campuses",
@@ -205,3 +208,5 @@ LOGGING = {
         },
     },
 }
+
+FIREBASE_APP = initialize_app()
