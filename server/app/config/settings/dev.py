@@ -3,6 +3,8 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
+from firebase_admin import initialize_app
+
 
 env = environ.Env()
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "djoser",
     "corsheaders",
+    "fcm_django",
     # Original apps
     "accounts",
     "campuses",
@@ -222,3 +225,5 @@ INSTALLED_APPS += [
 ]
 
 REST_FRAMEWORK.update({"DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"})
+
+FIREBASE_APP = initialize_app()

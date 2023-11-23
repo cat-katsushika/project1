@@ -1,0 +1,4 @@
+- model: campuses.university
+  pk: ee4cfb26-6d99-4f45-87d2-76da541f0081
+  fields:
+    name: 東京理科大学

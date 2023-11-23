@@ -3,6 +3,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
+from firebase_admin import initialize_app
 
 env = environ.Env()
 
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "djoser",
     "corsheaders",
+    "fcm_django",
     # Original apps
     "accounts",
     "campuses",
@@ -215,3 +217,6 @@ DJOSER = {
         "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
     },
 }
+
+
+FIREBASE_APP = initialize_app()
