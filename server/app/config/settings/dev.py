@@ -218,6 +218,8 @@ DJOSER = {
     'EMAIL': {
         # アカウント本登録
         'activation': 'accounts.email.ActivationEmail',
+        # アカウント本登録完了
+        'confirmation': 'accounts.email.ConfirmationEmail',
     },
 }
 

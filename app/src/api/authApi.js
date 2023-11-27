@@ -16,6 +16,19 @@ const authApi = {
             throw error;
         }
     },
+
+    ResendActivation : async (data) => {
+        try {
+            window.alert(data)
+            const response = await axios.post(
+                `${BASE_URL}/auth/users/resend_activation/`,
+                data,
+            );
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    },
 }
 
 export default authApi
