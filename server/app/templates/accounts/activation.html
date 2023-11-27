@@ -1,0 +1,19 @@
+{% block subject %}
+【unibo】本登録のご案内
+{% endblock subject %}
+
+{% block text_body %}
+{{ email }}様
+
+仮登録ありがとうございます。
+
+以下のリンクから本登録を完了してください。
+{{ protocol }}://{{ front_site_name }}/{{ url|safe }}
+
+本登録頂くことで、TwitterClone_Cのすべての機能がご利用頂けます。
+
+--------------------------------------
+発行元：Uni-bo
+--------------------------------------
+
+{% endblock text_body %}

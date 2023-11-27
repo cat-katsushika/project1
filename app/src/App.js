@@ -1,7 +1,7 @@
 import React from "react";
 import { CookiesProvider, withCookies } from "react-cookie";
 import { Route, Routes } from "react-router-dom";
-import { Activation } from './pages/Activation';
+import { Activation, ResendActivation} from './pages/Activation';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
         <Routes>
           <Route>
             <Route path="/activate/:uid/:token" element={<Activation />} />
-            <Route path="/" />
+            <Route path="/resendactivation" element={<ResendActivation />} />
           </Route>
         </Routes>
       </CookiesProvider>

@@ -67,7 +67,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -200,7 +200,7 @@ DJOSER = {
     # パスワード変更時に確認用パスワード必須
     "SET_PASSWORD_RETYPE": True,
     # アカウント本登録用URL
-    "ACTIVATION_URL": "/user/activate/{uid}/{token}/",
+    "ACTIVATION_URL": "activate/{uid}/{token}/",
     # メールアドレスリセット完了用URL
     "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}/",
     # パスワードリセット完了用URL
@@ -215,8 +215,13 @@ DJOSER = {
     "PERMISSIONS": {
         "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
     },
+    'EMAIL': {
+        # アカウント本登録
+        'activation': 'accounts.email.ActivationEmail',
+    },
 }
 
+CLIENT_SITE_NAME = "localhost:3000"
 
 INSTALLED_APPS += [
     "drf_spectacular",

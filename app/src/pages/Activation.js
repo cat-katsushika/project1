@@ -1,7 +1,7 @@
-import "@mui/material/Typography";
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import authApi from '../api/authApi';
+import EmailForm from '../components/EmailForm';
 
 export function Activation() {
     const { uid, token } = useParams();
@@ -36,4 +36,28 @@ export function Activation() {
         )
     }
 
+}
+
+export function ResendActivation() {
+    const navigate = useNavigate();
+    const [errorMessage, setError] = useState("");
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        authApi.ResendActivation(data)
+            .then((res) => {
+                console.log('成功しました', res);
+                navigate("/");
+                setError("");
+            })
+            .catch((error) => {
+                console.log(error)
+                setError(error.response.data);
+            });
+    };
+
+    return(
+        <EmailForm handleSubmit={handleSubmit} errorMessage={errorMessage} />
+    )
 }
