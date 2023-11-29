@@ -1,0 +1,5 @@
+type: object
+properties:
+  is_important::
+    type: string
+    example: true

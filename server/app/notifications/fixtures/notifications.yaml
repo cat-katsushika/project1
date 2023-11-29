@@ -5,6 +5,7 @@
     title: テスト通知1
     message: "こちらはテスト通知1の内容です。\r\n既読です。"
     is_read: true
+    is_important: true
     created_at: 2023-11-11 07:24:11.728221+00:00
     updated_at: 2023-11-11 07:24:16.577313+00:00
 - model: notifications.notification
@@ -14,5 +15,6 @@
     title: テスト通知2
     message: "こちらはテスト通知2の内容です。\r\n未読です。"
     is_read: false
+    is_important: false
     created_at: 2023-11-11 07:24:33.826697+00:00
     updated_at: 2023-11-11 07:24:33.826705+00:00

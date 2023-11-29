@@ -5,7 +5,6 @@ from pathlib import Path
 import environ
 from firebase_admin import initialize_app
 
-
 env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
