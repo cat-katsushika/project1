@@ -1,0 +1,32 @@
+patch:
+  operationId: notification_update_importance_update
+  summary: 通知の重要度更新API
+  description: |-
+    通知の重要度を更新します。 <br>
+    ログインしているアカウントの通知の重要度のみ更新できます。
+  parameters:
+    - in: path
+      name: id
+      description: |-
+        URLには通知のIDが指定されている必要があります。
+      schema:
+        type: string
+        format: uuid
+      required: true
+  tags:
+    - notification
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/important.yml"
+    required: true
+  security:
+    - AccessTokenAuth: []
+  responses:
+    "200":
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/important.yml"
+      description: ""
