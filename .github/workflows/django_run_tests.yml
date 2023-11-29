@@ -20,13 +20,13 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      # FCM用の偽認証ファイルを作成
-      - name: Create FCM fake auth file
-        run: |
-          mkdir -p ./fcm
-          echo ${{ secrets.FCM_FAKE_AUTH_FILE }} > ./fcm/fake_auth_file.json
-          pwd
-        working-directory: ./server/app
+      # FCM用の認証ファイルを作成
+      - name: create-json-for-fcm
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          name: "credentials.json"
+          json: ${{ secrets.FCM_AUTH_FILE }}
       # 依存関係のインストール
       - name: Install dependencies
         run: |
