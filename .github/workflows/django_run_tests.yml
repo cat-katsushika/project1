@@ -2,13 +2,12 @@ name: Django Run Tests
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: ["dev"]
   pull_request:
-    branches: [ "dev" ]
+    branches: ["dev"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -16,31 +15,40 @@ jobs:
         python-version: ["3.10.6"]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    # pipenvのインストール
-    - name: Install pipenv
-      run: |
-        pip install pipenv
-    # 依存関係のインストール
-    - name: Install dependencies
-      run: |
-        pipenv install --dev
-      working-directory: ./server/app
-    - name: Run Tests
-      run: |
-        pipenv run python manage.py test
-      working-directory: ./server/app
-      env:
-        DJANGO_SETTINGS_MODULE: config.settings.dev
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DEBUG: True
-        LANGUAGE_CODE: ja
-        TIME_ZONE: Asia/Tokyo
-        CLIENT_URL: http://localhost:3000
-        
-        
-        
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      # FCM用の認証ファイルを作成
+      - name: create-json-for-fcm
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          name: "credentials.json"
+          json: ${{ secrets.FCM_AUTH_FILE }}
+      # 依存関係のインストール
+      - name: Install dependencies
+        run: |
+          pip install -r docker-requirements.txt
+        working-directory: ./server/app
+      - name: Run Tests
+        run: |
+          python3 manage.py test
+        working-directory: ./server/app
+        env:
+          DJANGO_SETTINGS_MODULE: config.dev_docker_settings
+          DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          IS_DEBUG: "True"
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+          DB_ENGINE: django.db.backends.sqlite3
+          DB_NAME: sqlite3
+          DB_USER: ""
+          DB_PASSWORD: ""
+          DB_HOST: ""
+          DB_PORT: ""
+
+          LANGUAGE_CODE: ja
+          TIME_ZONE: Asia/Tokyo
+          CLIENT_URL: http://localhost:3000
