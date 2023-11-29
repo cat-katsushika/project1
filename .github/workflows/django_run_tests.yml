@@ -24,7 +24,9 @@ jobs:
       - name: Create FCM fake auth file
         run: |
           mkdir -p ./server/app/fcm
-          echo ${{ secrets.FCM_FAKE_AUTH_FILE }} > ./server/app/fcm/fake_auth_file.json
+          echo ${{ secrets.FCM_FAKE_AUTH_FILE }} > ./fcm/fake_auth_file.json
+          pwd
+        working-directory: ./server/app
       # 依存関係のインストール
       - name: Install dependencies
         run: |
