@@ -23,7 +23,7 @@ jobs:
       # FCM用の偽認証ファイルを作成
       - name: Create FCM fake auth file
         run: |
-          mkdir -p ./server/app/fcm
+          mkdir -p ./fcm
           echo ${{ secrets.FCM_FAKE_AUTH_FILE }} > ./fcm/fake_auth_file.json
           pwd
         working-directory: ./server/app
