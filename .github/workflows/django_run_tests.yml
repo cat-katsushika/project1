@@ -32,8 +32,16 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: config.dev_docker_settings
           DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          IS_DEBUG: "True"
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          DEBUG: True
+
+          DB_ENGINE: django.db.backends.sqlite3
+          DB_NAME: sqlite3
+          DB_USER: ""
+          DB_PASSWORD: ""
+          DB_HOST: ""
+          DB_PORT: ""
+
           LANGUAGE_CODE: ja
           TIME_ZONE: Asia/Tokyo
           CLIENT_URL: http://localhost:3000
