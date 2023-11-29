@@ -31,7 +31,7 @@ jobs:
         working-directory: ./server/app
         env:
           DJANGO_SETTINGS_MODULE: config.dev_docker_settings
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }}
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           DEBUG: True
           LANGUAGE_CODE: ja
