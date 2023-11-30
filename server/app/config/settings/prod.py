@@ -10,6 +10,7 @@ env = environ.Env()
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
 DEBUG = False
+
 SECRET_KEY = env("SECRET_KEY")
 
 INSTALLED_APPS = [
@@ -68,6 +69,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+DATABASES = {
+    "default": env.db(),
+}
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -85,8 +91,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = env("LANGUAGE_CODE")
-TIME_ZONE = env("TIME_ZONE")
+LANGUAGE_CODE = "ja"
+TIME_ZONE = "Asia/Tokyo"
 USE_I18N = True
 USE_TZ = True
 
@@ -150,11 +156,6 @@ EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = "elephant@uni-bo.net"
 
-DATABASES = {
-    "default": env.db(),
-}
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
-
 
 DJOSER = {
     # メールアドレスでログイン
@@ -208,4 +209,5 @@ LOGGING = {
     },
 }
 
+# FCM関連
 FIREBASE_APP = initialize_app()
