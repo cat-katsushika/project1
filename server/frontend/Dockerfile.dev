@@ -1,0 +1,20 @@
+# ベースイメージの指定
+FROM node:20.10
+# アプリケーションの作業ディレクトリを設定
+WORKDIR /app
+
+# 依存関係ファイルをコピー
+COPY package.json /app
+COPY package-lock.json /app
+
+# 依存関係のインストール
+RUN npm install
+
+# アプリケーションのソースをコピー
+COPY . /app
+
+# 開発サーバーの起動
+CMD ["npm", "start"]
+
+# 開発サーバーのポートを公開
+EXPOSE 3000
