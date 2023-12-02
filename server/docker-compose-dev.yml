@@ -39,6 +39,20 @@ services:
     volumes:
       - ../openapi:/openapi
 
+  react-app:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - django
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
 networks:
   webnet:
     driver: bridge
