@@ -1,10 +1,26 @@
 version: '3.9'
 
 services:
+
+  postgres:
+    image: postgres:14
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - webnet
+  
   django:
     build:
       context: ./app
-      dockerfile: Dockerfile.django
+      dockerfile: Dockerfile.django.dev
     container_name: django
     command: ['bash', '-c', 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000']
     environment:
@@ -16,19 +32,22 @@ services:
     volumes:
       - ./app:/app
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - webnet
 
-  postgres:
-    image: postgres:14
+  react-app:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend.dev
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-    networks:
-      - webnet
+      - CHOKIDAR_USEPOLLING=true
 
   swagger-ui:
     image: swaggerapi/swagger-ui
@@ -38,20 +57,6 @@ services:
       - SWAGGER_JSON=/openapi/main.yml
     volumes:
       - ../openapi:/openapi
-
-  react-app:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    depends_on:
-      - django
-    ports:
-      - "3000:3000"
-    environment:
-      - CHOKIDAR_USEPOLLING=true
 
 networks:
   webnet:
