@@ -9,9 +9,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 env = environ.Env()
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
-DEBUG = False
+DEBUG = env("IS_DEBUG")
 
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 INSTALLED_APPS = [
     # Django
@@ -99,10 +99,10 @@ USE_TZ = True
 ALLOWED_HOSTS = ["uni-bo.net", "www.uni-bo.net"]
 
 STATIC_URL = "static/"
-STATIC_ROOT = "/usr/share/nginx/html/static"  # 静的ファイルを集める場所（STATIC_ROOT）を指定
+STATIC_ROOT = env("STATIC_ROOT", default=os.path.join(BASE_DIR, "static"))
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = "/usr/share/nginx/html/media"
+MEDIA_ROOT = env("MEDIA_ROOT", default=os.path.join(BASE_DIR, "media"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -199,23 +199,6 @@ DJOSER = {
 }
 
 CLIENT_SITE_NAME = "localhost:3000"
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "DEBUG",
-            "propagate": True,
-        },
-    },
-}
 
 # FCM関連
 FIREBASE_APP = initialize_app()
