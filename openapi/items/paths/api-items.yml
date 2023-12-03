@@ -10,6 +10,15 @@ get:
         nameの値を含む商品名を持つ商品のみを返します。
       schema:
         type: string
+      example: "線形代数"
+    - in: query
+      name: purchased
+      description: |-
+        購入されてない商品だけを返す <br>
+        ?purchased=false とすると、購入されていない商品のみを返します。
+      schema:
+        type: string
+      example: "false"
     - name: page
       description: |-
         ページ番号 <br>
@@ -18,6 +27,7 @@ get:
       in: query
       schema:
         type: integer
+      example: 2
   tags:
     - items
   security:
