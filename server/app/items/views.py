@@ -24,12 +24,20 @@ class ItemListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = self.queryset
-        listing_status_list = [Item.ListingStatus.UNPURCHASED, Item.ListingStatus.PURCHASED]
+        listing_status_list = [
+            Item.ListingStatus.UNPURCHASED,
+            Item.ListingStatus.PURCHASED,
+            Item.ListingStatus.COMPLETED,
+        ]
         queryset = queryset.filter(listing_status__in=listing_status_list)
         # 商品名で検索
         name_query = self.request.query_params.get("name", None)
         if name_query:
             queryset = queryset.filter(name__icontains=name_query)
+        # 購入済みの商品を除外
+        purchased_query = self.request.query_params.get("purchased", None)
+        if purchased_query == "false":
+            queryset = queryset.filter(listing_status=Item.ListingStatus.UNPURCHASED)
         return queryset
 
 
