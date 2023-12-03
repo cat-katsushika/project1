@@ -1,5 +1,5 @@
 # ベースイメージの指定
-FROM node:20.10
+FROM node:21-alpine3.17
 # アプリケーションの作業ディレクトリを設定
 WORKDIR /app
 
