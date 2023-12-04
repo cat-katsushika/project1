@@ -10,6 +10,7 @@ urlpatterns = [
     path("<uuid:pk>/", views.ItemRetrieveUpdateDestroyView.as_view()),
     path("<uuid:pk>/purchase/", views.ItemPurchaseView.as_view()),
     path("<uuid:pk>/cancel/", views.ItemCancelView.as_view()),
+    path("<uuid:pk>/relisting/", views.ItemReListingView.as_view()),
     path("<uuid:pk>/complete/", views.ItemCompleteView.as_view()),
     path("<uuid:pk>/like-toggle/", views.ItemLikeToggleView.as_view()),
     path("user/like/", views.UserLikeItemListView.as_view()),

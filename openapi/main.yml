@@ -599,6 +599,8 @@ paths:
     $ref: "./items/paths/api-items-{id}-complete.yml"
   /api/items/{id}/cancel/:
     $ref: "./items/paths/api-items-{id}-cancel.yml"
+  /api/items/{id}/relisting/:
+    $ref: "./items/paths/api-items-{id}-relisting.yml"
   /api/items/{id}/like-toggle/:
     $ref: "./items/paths/api-items-{id}-like-toggle.yml"
   /api/items/user/like/:

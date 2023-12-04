@@ -218,6 +218,25 @@ class ItemCancelView(generics.UpdateAPIView):
         return Response(serializer.data)
 
 
+class ItemReListingView(generics.UpdateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = [IsOwnerOrAdminOrReadOnly]
+
+    def update(self, request, *args, **kwargs):
+        item = self.get_object()
+
+        if item.seller != request.user:
+            return Response({"error": "あなたの出品物ではありません。"}, status=status.HTTP_400_BAD_REQUEST)
+        if item.listing_status != Item.ListingStatus.CANCELED:
+            return Response({"error": "キャンセルされた商品以外は再出品できません。"}, status=status.HTTP_400_BAD_REQUEST)
+        item.listing_status = Item.ListingStatus.UNPURCHASED
+        item.save()
+
+        serializer = self.get_serializer(item)
+        return Response(serializer.data)
+
+
 class ItemCompleteView(generics.UpdateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
