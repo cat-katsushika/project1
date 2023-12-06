@@ -54,10 +54,10 @@ export function ResendActivation() {
             .catch((error) => {
                 console.log('エラー:', error)
                 if (error.response?.status === 400) {
-                    setError("現在このメールアドレスは処理できません。");
+                    setError("✖現在このメールアドレスは処理できません。");
                     return;
                 }
-                const message = "Something went wrong.";
+                const message = "✖Something went wrong.";
                 setError(message);
             });
     };
