@@ -204,7 +204,7 @@ DJOSER = {
     },
 }
 
-CLIENT_SITE_NAME = "localhost:3000"
+CLIENT_SITE_NAME = env("CLIENT_SITE_NAME")
 
 # FCM関連
 FIREBASE_APP = initialize_app()
