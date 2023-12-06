@@ -5,7 +5,7 @@ const BASE_URL = process.env.REACT_APP_API_URL
 axios.defaults.withCredentials = true;
 
 const authApi = {
-    Activate : async (uid, token) => {
+    Activate: async (uid, token) => {
         try {
             const response = await axios.post(
                 `${BASE_URL}/auth/users/activation/`,
@@ -17,11 +17,10 @@ const authApi = {
         }
     },
 
-    ResendActivation : async (data) => {
+    ResendActivation: async (data) => {
         try {
-            window.alert(data)
             const response = await axios.post(
-                `${BASE_URL}/auth/users/resend_activation/`,
+                `${BASE_URL}/api/auth/users/resend_activation/`,
                 data,
             );
             return response;

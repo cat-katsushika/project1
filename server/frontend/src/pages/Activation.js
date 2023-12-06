@@ -52,12 +52,17 @@ export function ResendActivation() {
                 setError("");
             })
             .catch((error) => {
-                console.log(error)
-                setError(error.response.data);
+                console.log('エラー:', error)
+                if (error.response?.status === 400) {
+                    setError("現在このメールアドレスは処理できません。");
+                    return;
+                }
+                const message = "Something went wrong.";
+                setError(message);
             });
     };
 
-    return(
+    return (
         <EmailForm handleSubmit={handleSubmit} errorMessage={errorMessage} />
     )
 }
