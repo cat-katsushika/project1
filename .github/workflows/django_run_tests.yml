@@ -59,3 +59,4 @@ jobs:
           LANGUAGE_CODE: ja
           TIME_ZONE: Asia/Tokyo
           CLIENT_URL: http://localhost:3000
+          CLIENT_SITE_NAME: localhost:3000
