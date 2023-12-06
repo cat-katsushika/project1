@@ -4,14 +4,13 @@ FROM node:21-alpine3.17
 WORKDIR /app
 
 # 依存関係ファイルをコピー
-COPY package.json /app
-COPY package-lock.json /app
+COPY package.json package-lock.json ./
 
 # 依存関係のインストール
 RUN npm install
 
 # アプリケーションのソースをコピー
-COPY . /app
+COPY . ./
 
 # 開発サーバーの起動
 CMD ["npm", "start"]

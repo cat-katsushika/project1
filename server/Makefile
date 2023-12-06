@@ -23,9 +23,30 @@ dev:
 down:
 	docker compose -f docker-compose-dev.yml down
 
+.PHONY: prod-build
+prod-build:
+	docker compose -f docker-compose-prod.yml build
+
+.PHONY: prod-up-d
+prod-up-d:
+	docker compose -f docker-compose-prod.yml up -d
+
+.PHONY: prod
+prod:
+	@make prod-build
+	@make prod-up-d
+
+.PHONY: prod-down
+prod-down:
+	docker compose -f docker-compose-prod.yml down
+
 .PHONY: logs
 logs:
 	docker compose -f docker-compose-dev.yml logs -f
+
+.PHONY: prod-logs
+prod-logs:
+	docker compose -f docker-compose-prod.yml logs -f
 
 .PHONY: test
 test:
