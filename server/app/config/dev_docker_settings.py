@@ -102,7 +102,7 @@ TIME_ZONE = "Asia/Tokyo"
 USE_I18N = True
 USE_TZ = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 
 STATIC_URL = "static/"
 STATIC_ROOT = env("STATIC_ROOT", default=os.path.join(BASE_DIR, "static"))
@@ -124,7 +124,7 @@ REST_FRAMEWORK = {
     "DEFAULT_MAX_FILE_SIZE": 10 * 1024 * 1024,  # 最大ファイルサイズ (10MB)
 }
 
-CLIENT_URL = os.getenv("CLIENT_URL")
+CLIENT_URL = env("CLIENT_URL")
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True  # どのリクエストでも許可
     CORS_ALLOW_CREDENTIALS = True  # Cookieの送信の許可
