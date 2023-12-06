@@ -37,7 +37,6 @@ jobs:
           python3 manage.py test
         working-directory: ./server/app
         env:
-          DJANGO_SETTINGS_MODULE: config.dev_docker_settings
           DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }}
           IS_DEBUG: "True"
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
