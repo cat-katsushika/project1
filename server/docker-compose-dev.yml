@@ -23,8 +23,6 @@ services:
       dockerfile: Dockerfile.django.dev
     container_name: django
     command: ['bash', '-c', 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000']
-    environment:
-      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
     env_file:
       - .env
     ports:
