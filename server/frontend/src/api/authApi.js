@@ -8,7 +8,7 @@ const authApi = {
     Activate: async (uid, token) => {
         try {
             const response = await axios.post(
-                `${BASE_URL}/auth/users/activation/`,
+                `${BASE_URL}/api/auth/users/activation/`,
                 { uid, token }
             );
             return response.data;
