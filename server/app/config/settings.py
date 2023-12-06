@@ -5,7 +5,7 @@ from pathlib import Path
 import environ
 from firebase_admin import initialize_app
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
