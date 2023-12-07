@@ -1,16 +1,16 @@
-import React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Avatar from "@mui/material/Avatar";
+import Box from '@mui/material/Box';
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
+import "@mui/material/Typography";
 import Typography from '@mui/material/Typography';
+import React from "react";
 
 function Copyright(props) {
   return (
@@ -62,7 +62,7 @@ const EmailForm = (props) => {
               <p className="red">{errorMessage.non_field_errors}</p>
             ) : null}
             {errorMessage[0] ? (
-              <p className="red">{errorMessage[0]}</p>
+              <Typography color="error" sx={{ mb: 2 }}>{errorMessage}</Typography>
             ) : null}
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -70,7 +70,7 @@ const EmailForm = (props) => {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="登録したメールアドレス"
                   name="email"
                   autoComplete="email"
                 />

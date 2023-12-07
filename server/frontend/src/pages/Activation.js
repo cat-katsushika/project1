@@ -45,6 +45,10 @@ export function ResendActivation() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        if (!data.get("email")) {
+            setError("メールアドレスを入力してください。");
+            return;
+        }
         authApi.ResendActivation(data)
             .then((res) => {
                 console.log('成功しました', res);
@@ -52,12 +56,17 @@ export function ResendActivation() {
                 setError("");
             })
             .catch((error) => {
-                console.log(error)
-                setError(error.response.data);
+                console.log('エラー:', error)
+                if (error.response?.status === 400) {
+                    setError("認証待ちメールアドレスに該当しませんでした。");
+                    return;
+                }
+                const message = "Something went wrong.";
+                setError(message);
             });
     };
 
-    return(
+    return (
         <EmailForm handleSubmit={handleSubmit} errorMessage={errorMessage} />
     )
 }
