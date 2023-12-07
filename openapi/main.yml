@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:8000
     description: 開発用サーバー
-  - url: https://www.uni-bo.net
+  - url: https://api.uni-bo.net
     description: 本番用サーバー
 paths:
   /api/auth/jwt/create/:
