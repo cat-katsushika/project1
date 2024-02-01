@@ -181,7 +181,7 @@ DJOSER = {
     # パスワード変更時に確認用パスワード必須
     "SET_PASSWORD_RETYPE": True,
     # アカウント本登録用URL
-    "ACTIVATION_URL": "activate/{uid}/{token}/",
+    "ACTIVATION_URL": "uniboo://auth/?uid={uid}&token={token}",
     # メールアドレスリセット完了用URL
     "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}/",
     # パスワードリセット完了用URL
