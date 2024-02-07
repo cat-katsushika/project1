@@ -55,6 +55,7 @@ jobs:
           EMAIL_HOST_PASSWORD: ""
           EMAIL_USE_TLS: ""
           DEFAULT_FROM_EMAIL: ""
+          EMAIL_USE_SSL: ""
 
           LANGUAGE_CODE: ja
           TIME_ZONE: Asia/Tokyo
