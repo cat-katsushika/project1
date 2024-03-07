@@ -3,6 +3,7 @@ from firebase_admin.messaging import Message as FCMMessage
 from firebase_admin.messaging import Notification as FCMNotification
 from rest_framework import generics, permissions, status, views
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -18,6 +19,8 @@ class ItemListPagination(PageNumberPagination):
 
 
 class ItemListView(generics.ListAPIView):
+    permissions_classes = [IsAuthenticated]
+
     queryset = Item.objects.all().order_by("-updated_at")
     serializer_class = ItemSerializer
     pagination_class = ItemListPagination
@@ -42,6 +45,8 @@ class ItemListView(generics.ListAPIView):
 
 
 class ItemCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         # request.dataを変更可能な辞書にコピー
         data = dict(request.data.lists())
@@ -167,6 +172,8 @@ class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ItemPurchaseView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
 
@@ -238,6 +245,8 @@ class ItemReListingView(generics.UpdateAPIView):
 
 
 class ItemCompleteView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
 
@@ -255,6 +264,8 @@ class ItemCompleteView(generics.UpdateAPIView):
 
 
 class ItemLikeToggleView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         item_id = kwargs["pk"]
         user_id = request.user.id
@@ -273,7 +284,7 @@ class ItemLikeToggleView(views.APIView):
 class UserLikeItemListView(generics.ListAPIView):
     serializer_class = ItemSerializer
     pagination_class = ItemListPagination
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -286,7 +297,7 @@ class UserLikeItemListView(generics.ListAPIView):
 class UserSellItemListView(generics.ListAPIView):
     serializer_class = ItemSerializer
     pagination_class = ItemListPagination
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -297,7 +308,7 @@ class UserSellItemListView(generics.ListAPIView):
 class UserBuyItemListView(generics.ListAPIView):
     serializer_class = ItemSerializer
     pagination_class = ItemListPagination
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
