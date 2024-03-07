@@ -57,9 +57,9 @@ class JWTokenRefreshView(views.TokenRefreshView):
             return Response({"error": "No refresh"}, status=status.HTTP_400_BAD_REQUEST)
 
         # リクエストにリフレッシュトークンを含めなおす
-        request.data["refresh"] = refresh_token
-
-        serializer = self.get_serializer(data=request.data)
+        request_data = request.data.copy()
+        request_data["refresh"] = refresh_token
+        serializer = self.get_serializer(data=request_data)
 
         try:
             serializer.is_valid(raise_exception=True)
