@@ -3,9 +3,9 @@ from fcm_django.models import FCMDevice
 from firebase_admin.messaging import Message as FCMMessage
 from firebase_admin.messaging import Notification as FCMNotification
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 
 from notifications.models import Notification
 
@@ -64,7 +64,7 @@ class CommentCreateView(generics.CreateAPIView):
 
 class CommentListAPIView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request, *args, **kwargs):
         comments = Comment.objects.all()
 
