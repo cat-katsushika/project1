@@ -5,6 +5,7 @@ from firebase_admin.messaging import Notification as FCMNotification
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from notifications.models import Notification
 
@@ -15,6 +16,8 @@ User = get_user_model()
 
 
 class CommentCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
@@ -60,6 +63,8 @@ class CommentCreateView(generics.CreateAPIView):
 
 
 class CommentListAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request, *args, **kwargs):
         comments = Comment.objects.all()
 

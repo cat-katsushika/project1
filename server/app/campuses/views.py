@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Campus, University
 from .serializers import CampusSerializer, UniversitySerializer
@@ -22,11 +23,15 @@ class UniversityListView(APIView):
 
 
 class CampusDetailView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+
     queryset = Campus.objects.all()
     serializer_class = CampusSerializer
 
 
 class CampusListView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request, *args, **kwargs):
         queryset = Campus.objects.all()
         university_id = request.query_params.get("university_id", None)

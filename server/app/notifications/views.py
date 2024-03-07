@@ -13,7 +13,7 @@ class NotificationView(APIView):
     Notification API View
     """
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         """
@@ -29,7 +29,7 @@ class UpdateNotificationImportanceView(APIView):
     Update Notification API View
     """
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         """
