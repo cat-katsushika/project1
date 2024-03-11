@@ -1,7 +1,7 @@
 from fcm_django.models import FCMDevice
 from firebase_admin.messaging import Message as FCMMessage
 from firebase_admin.messaging import Notification as FCMNotification
-from rest_framework import generics, permissions, status, views
+from rest_framework import generics, status, views
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -95,19 +95,10 @@ class ItemCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class IsOwnerOrAdminOrReadOnly(permissions.BasePermission):
-    message = "出品者しか編集できません。"
-
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return request.user == obj.seller or request.user.is_staff
-
-
 class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = [IsOwnerOrAdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
         partial = self.request.query_params.get("partial", False)
@@ -115,7 +106,9 @@ class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         print("partial: ", partial)
         print("keywargs: ", kwargs)
 
-        if instance.listing_status != Item.ListingStatus.UNPURCHASED:
+        if instance.listing_status == Item.ListingStatus.PURCHASED:
+            return Response({"error": "購入された商品は編集できません。"}, status=status.HTTP_400_BAD_REQUEST)
+        if instance.listing_status == Item.ListingStatus.COMPLETED:
             return Response({"error": "売り切れた商品は編集できません。"}, status=status.HTTP_400_BAD_REQUEST)
 
         # request.dataを変更可能な辞書にコピー
@@ -211,13 +204,15 @@ class ItemPurchaseView(generics.UpdateAPIView):
 class ItemCancelView(generics.UpdateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = [IsOwnerOrAdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
         item = self.get_object()
 
         if item.buyer is not None:
             return Response({"error": "購入された商品はキャンセルできません。"}, status=status.HTTP_400_BAD_REQUEST)
+        if item.seller != request.user:
+            return Response({"error": "あなたの出品物ではありません。"}, status=status.HTTP_400_BAD_REQUEST)
         item.listing_status = Item.ListingStatus.CANCELED
         item.save()
 
@@ -228,7 +223,7 @@ class ItemCancelView(generics.UpdateAPIView):
 class ItemReListingView(generics.UpdateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = [IsOwnerOrAdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
         item = self.get_object()
