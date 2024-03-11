@@ -19,7 +19,7 @@ class ItemListPagination(PageNumberPagination):
 
 
 class ItemListView(generics.ListAPIView):
-    permissions_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     queryset = Item.objects.all().order_by("-updated_at")
     serializer_class = ItemSerializer
