@@ -76,7 +76,7 @@ class JWTokenRefreshView(views.TokenRefreshView):
         )
         response.set_cookie(
             "refresh_token",
-            serializer.validated_data["refresh"],
+            refresh_token,
             max_age=60 * 60 * 24 * 7,
             httponly=True,
         )
